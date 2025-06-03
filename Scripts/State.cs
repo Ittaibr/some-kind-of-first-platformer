@@ -28,7 +28,7 @@ public partial class State : Node
 	{
 		
 	}
-	private void TransitionTo(string key)
+	public virtual void TransitionTo(string key)
 	{
 		
 	}

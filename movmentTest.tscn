@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://bvtfggwm0spt3"]
+[gd_scene load_steps=24 format=4 uid="uid://bvtfggwm0spt3"]
 
 [ext_resource type="PackedScene" uid="uid://udflyx6jsf2a" path="res://player.tscn" id="1_mhsm2"]
 [ext_resource type="Texture2D" uid="uid://dujuwn608iixv" path="res://icon.svg" id="4_ikq35"]
@@ -1202,10 +1202,16 @@ pattern_0 = SubResource("TileMapPattern_ikq35")
 pattern_1 = SubResource("TileMapPattern_rb4ph")
 pattern_2 = SubResource("TileMapPattern_rxbcs")
 
+[sub_resource type="Curve2D" id="Curve2D_5ht8e"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 74, 0, 0, 0, 0, 0, 137, -1)
+}
+point_count = 2
+
 [node name="Node2D" type="Node2D"]
 
 [node name="movingPlatform" parent="." instance=ExtResource("8_rxbcs")]
-position = Vector2(-48, 322)
+position = Vector2(-50, 316)
 curve = SubResource("Curve2D_30c2j")
 speed = 20.0
 speedScale = 0.6
@@ -1240,3 +1246,9 @@ collision_mask = 7
 
 [node name="player" parent="." instance=ExtResource("1_mhsm2")]
 position = Vector2(-197, 248)
+
+[node name="movingPlatform3" parent="." instance=ExtResource("8_rxbcs")]
+position = Vector2(60, 304)
+curve = SubResource("Curve2D_5ht8e")
+speed = 20.0
+speedScale = 0.6

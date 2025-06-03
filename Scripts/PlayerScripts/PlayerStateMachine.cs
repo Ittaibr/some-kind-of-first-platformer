@@ -50,6 +50,8 @@ public partial class PlayerStateMachine : Node
 		{
 			return;
 		}
+		GD.Print(key);
+
 		currentState.Exit();
 		currentState = states[key];
 		currentState.Enter();

@@ -27,7 +27,7 @@ radius = 64.0312
 
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_epg4t")
-WalkSpeed = 100.0
+WalkSpeed = 60.0
 
 [node name="EnemySprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hb8ge")
@@ -44,7 +44,9 @@ intialState = NodePath("Roaming")
 
 [node name="Roaming" type="Node" parent="StateMachine"]
 script = ExtResource("4_wujgv")
+totalWalkDistance = 500.0
 timeLengthToWalk = 5.0
+animationName = "default"
 
 [node name="Chase" type="Node" parent="StateMachine"]
 
@@ -52,19 +54,20 @@ timeLengthToWalk = 5.0
 visible = false
 collision_layer = 0
 collision_mask = 8
-health = NodePath("../HealthComponent")
+health = NodePath("../HitBoxComponent/HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBoxComponent"]
 position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_e1ltt")
 
-[node name="HealthComponent" parent="." instance=ExtResource("7_wujgv")]
-
 [node name="HitBoxComponent" parent="." instance=ExtResource("7_hb8ge")]
 collision_layer = 16
 collision_mask = 0
 
+[node name="HealthComponent" parent="HitBoxComponent" instance=ExtResource("7_wujgv")]
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxComponent"]
+position = Vector2(-2, 0)
 shape = SubResource("CircleShape2D_e1ltt")
 
-[connection signal="HealthDepleted" from="HealthComponent" to="." method="OnHealthDepleted"]
+[connection signal="HealthDepleted" from="HitBoxComponent/HealthComponent" to="." method="OnHealthDepleted"]

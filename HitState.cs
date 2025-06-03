@@ -2,7 +2,7 @@ using Game.Component;
 using Godot;
 using System;
 
-public partial class HitState : PlayerState
+public partial class HitState : FallState
 {
 	protected bool isFinished = false;
 	[Export] HealthComponent health;
@@ -18,6 +18,7 @@ public partial class HitState : PlayerState
 		GD.Print("HitState entered");
 		isFinished = false;
 		health.SetTemporaryImmortalityTimer(invincibilityTimer);
+
 		
 	}
 	public override void Exit()
@@ -26,6 +27,7 @@ public partial class HitState : PlayerState
 	}
 	public override void PhysicsUpdate(double delta)
 	{
+		base.PhysicsUpdate(delta);
 		TransferChecks();
 
 

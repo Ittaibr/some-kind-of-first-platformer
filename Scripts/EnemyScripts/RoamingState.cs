@@ -3,7 +3,7 @@ using System;
 
 public partial class RoamingState : EnemyState
 {
-	[Export]double walkSpeed = 100;
+	protected double walkSpeed = 100;
 	[Export]private double totalWalkDistance = 100;
 	private double walkDistance = 0;
 	[Export] private double timeLengthToWalk;
@@ -24,26 +24,14 @@ public partial class RoamingState : EnemyState
 	{
 		
 	}
-	private void ChangeDirection()
-	{
-		pastPos = parent.Position;
-		velocity.X *= -1;
-
-
-	}
-
 	public override void PhysicsUpdate(double delta)
 	{
-		walkDistance += Mathf.Abs(parent.Position.DistanceTo(pastPos));
-		walkTimer -= delta;
-		velocity = parent.Velocity;
-		velocity.X = (float)walkSpeed;
 		if (parent.IsOnWall())
 		{
-			ChangeDirection();
+			walkSpeed *= -1;
 		}
+		velocity.X = (float)walkSpeed;
 		parent.Velocity = velocity;
-		parent.MoveAndSlide();
 
 	}
 	public override void Update(double delta)
