@@ -1,0 +1,30 @@
+using Godot;
+using System;
+
+public partial class EnemyStateMachine : StateMachine
+{
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+	}
+	public void Init(Enemy parent,AnimatedSprite2D animations)
+	{
+		base.Init();
+		foreach (Node node in GetChildren())
+		{
+			if (node is EnemyState s)
+			{
+				s.parent = parent;
+				s.animations = animations;
+				s.stateMachine = this;
+
+			}
+		}
+		currentState.Enter();
+
+	}
+
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	
+}

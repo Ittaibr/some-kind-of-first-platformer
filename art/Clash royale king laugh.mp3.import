@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bskkchf7082g3"
+path="res://.godot/imported/Clash royale king laugh.mp3-2a79514556947a1d672fffb85c28c2b6.mp3str"
+
+[deps]
+
+source_file="res://art/Clash royale king laugh.mp3"
+dest_files=["res://.godot/imported/Clash royale king laugh.mp3-2a79514556947a1d672fffb85c28c2b6.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bmyly8w7v7edr"
+path="res://.godot/imported/clash royale angry king emote sound.mp3-cd23abebb2b2946b5aca6f5fd42853b2.mp3str"
+
+[deps]
+
+source_file="res://art/clash royale angry king emote sound.mp3"
+dest_files=["res://.godot/imported/clash royale angry king emote sound.mp3-cd23abebb2b2946b5aca6f5fd42853b2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

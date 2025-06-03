@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://b0iqkpw4w2u32"]
+
+[ext_resource type="Texture2D" uid="uid://cctqmvwm6k655" path="res://art/tempDuckFLoor.jpg" id="1_oj3tl"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cgngl"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wd3ws"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_oj3tl")
+}],
+"loop": true,
+"name": &"floor",
+"speed": 5.0
+}]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_qn07e"]
+
+[node name="worldFloor" type="StaticBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_cgngl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(3000, 0.149)
+sprite_frames = SubResource("SpriteFrames_wd3ws")
+animation = &"floor"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -25)
+shape = SubResource("WorldBoundaryShape2D_qn07e")
+one_way_collision_margin = 128.0

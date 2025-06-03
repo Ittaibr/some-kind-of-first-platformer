@@ -1,0 +1,70 @@
+[gd_scene load_steps=11 format=3 uid="uid://w50h2eiaeidk"]
+
+[ext_resource type="Script" uid="uid://btjmsn3tl5t4g" path="res://Scripts/EnemyScripts/Enemy.cs" id="1_epg4t"]
+[ext_resource type="Texture2D" uid="uid://dujuwn608iixv" path="res://icon.svg" id="1_iifgy"]
+[ext_resource type="Script" uid="uid://c2wkl6p1okfxc" path="res://EnemyStateMachine.cs" id="4_epg4t"]
+[ext_resource type="Script" uid="uid://cwafsbubt83tn" path="res://Scripts/EnemyScripts/RoamingState.cs" id="4_wujgv"]
+[ext_resource type="PackedScene" uid="uid://co8ycjt0c8n6h" path="res://Components/hurt_box_component.tscn" id="6_3yqyl"]
+[ext_resource type="PackedScene" uid="uid://bwj6dwlpghm5n" path="res://Components/hit_box_component.tscn" id="7_hb8ge"]
+[ext_resource type="PackedScene" uid="uid://bs7go3sq33q67" path="res://Components/health_component.tscn" id="7_wujgv"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hb8ge"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_iifgy")
+}],
+"loop": true,
+"name": &"defult",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e1ltt"]
+size = Vector2(124, 125)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e1ltt"]
+radius = 64.0312
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_epg4t")
+WalkSpeed = 100.0
+
+[node name="EnemySprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_hb8ge")
+animation = &"defult"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_e1ltt")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("4_epg4t")
+intialState = NodePath("Roaming")
+
+[node name="Roaming" type="Node" parent="StateMachine"]
+script = ExtResource("4_wujgv")
+timeLengthToWalk = 5.0
+
+[node name="Chase" type="Node" parent="StateMachine"]
+
+[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("health") instance=ExtResource("6_3yqyl")]
+visible = false
+collision_layer = 0
+collision_mask = 8
+health = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBoxComponent"]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_e1ltt")
+
+[node name="HealthComponent" parent="." instance=ExtResource("7_wujgv")]
+
+[node name="HitBoxComponent" parent="." instance=ExtResource("7_hb8ge")]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxComponent"]
+shape = SubResource("CircleShape2D_e1ltt")
+
+[connection signal="HealthDepleted" from="HealthComponent" to="." method="OnHealthDepleted"]
