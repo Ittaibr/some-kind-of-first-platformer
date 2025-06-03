@@ -396,8 +396,7 @@ shape = SubResource("RectangleShape2D_q6r6c")
 [node name="playerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_0hol4")
-animation = &"Hit"
-frame_progress = 0.964783
+animation = &"Jump"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -463,18 +462,19 @@ frameHit = 0
 collisionPath = NodePath("../../HitBoxComponent/SwordHitbox")
 animationName = "AttackContinue"
 
-[node name="Hit" type="Node" parent="StateMachine" node_paths=PackedStringArray("collision")]
+[node name="Hit" type="Node" parent="StateMachine" node_paths=PackedStringArray("health")]
 script = ExtResource("17_pylmc")
-collision = NodePath("../../HurtBoxComponent/CollisionShape2D")
+health = NodePath("../../HealthComponent")
 animationName = "Hit"
 
 [node name="PlayerMoveComp" type="Node" parent="."]
 script = ExtResource("11_ivps1")
 
-[node name="HealthComponent" parent="." instance=ExtResource("17_op7ga")]
+[node name="HealthComponent" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("17_op7ga")]
+collision = NodePath("../HurtBoxComponent/CollisionShape2D")
 
-[connection signal="ReceivedDamage" from="HurtBoxComponent" to="StateMachine" method="OnHit"]
 [connection signal="animation_finished" from="playerSprite" to="StateMachine/SimpleAttack" method="OnAnimationStop"]
 [connection signal="animation_finished" from="playerSprite" to="StateMachine/SimpleAttackContinue" method="OnAnimationStop"]
 [connection signal="animation_finished" from="playerSprite" to="StateMachine/Hit" method="OnAnimationStop"]
 [connection signal="HealthDepleted" from="HealthComponent" to="." method="OnHealthDepleted"]
+[connection signal="ReceivedDamage" from="HealthComponent" to="StateMachine" method="OnHit"]

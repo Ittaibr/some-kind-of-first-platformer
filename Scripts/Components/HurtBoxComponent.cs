@@ -4,7 +4,6 @@ using System;
 
 public partial class HurtBoxComponent : Area2D
 {
-	[Signal] public delegate void ReceivedDamageEventHandler(int damage);
 	[Export] HealthComponent health;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -19,7 +18,6 @@ public partial class HurtBoxComponent : Area2D
 		{
 			HitBoxComponent hitBox = (HitBoxComponent)body;
 			health.SetHealth(health.GetHealth() - hitBox.Damage);
-			EmitSignal(nameof(ReceivedDamage), hitBox.Damage);
 		}
 	}
 
