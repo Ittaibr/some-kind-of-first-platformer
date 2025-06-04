@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public partial class StateMachine : State
 {
-	[Export]public NodePath intialState;
+	[Export]public Node intialState;
 	protected Dictionary<string, State> states;
 	protected State currentState;
 
@@ -17,7 +17,7 @@ public partial class StateMachine : State
 			}
 		}
 		GD.Print(intialState);
-		currentState = GetNode<State>(intialState);
+		currentState = (State)intialState;
 	}
 
 	public override void TransitionTo(string key){
@@ -39,6 +39,10 @@ public partial class StateMachine : State
 	}
 	public override void PhysicsUpdate(double delta)
 	{
+		GD.Print(intialState);
+
+		GD.Print("PhysicsUpdateEntered");
+		GD.Print(currentState);
 		currentState.PhysicsUpdate(delta);
 		currentState.TransferChecksAndOperation();
 	}

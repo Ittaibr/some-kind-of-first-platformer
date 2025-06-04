@@ -8,7 +8,8 @@ public partial class RoamingState : EnemyState
 	private double walkDistance = 0;
 	[Export] private double timeLengthToWalk;
 	private double walkTimer =0;
-	private Vector2 pastPos;
+	private Vector2 direction;
+	
 
 
 
@@ -26,11 +27,15 @@ public partial class RoamingState : EnemyState
 	}
 	public override void PhysicsUpdate(double delta)
 	{
-		if (parent.IsOnWall())
+		direction = parent.patrolComponent.direction;
+		if (direction.X < 0)
 		{
-			walkSpeed *= -1;
+			velocity.X = -(float)walkSpeed;
 		}
-		velocity.X = (float)walkSpeed;
+		else
+		{
+			velocity.X = (float)walkSpeed;
+		}
 		parent.Velocity = velocity;
 
 	}

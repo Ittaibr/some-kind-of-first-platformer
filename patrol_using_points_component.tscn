@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1nk0u3eukeqr"]
+
+[ext_resource type="Script" uid="uid://b4m2t77ysasko" path="res://PatrolUsingPointsComponent.cs" id="1_jemqs"]
+
+[node name="PatrolUsingPointsComponent" type="Node2D"]
+script = ExtResource("1_jemqs")

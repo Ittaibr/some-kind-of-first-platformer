@@ -3,15 +3,17 @@ using System;
 
 public partial class Enemy : CharacterBody2D
 {
+	[Export] public Node2D PatrolMarkersRoot;
 	[Export] public double WalkSpeed { get; set; }
+	[Export]public PatrolUsingPointsComponent patrolComponent;
 	public AnimatedSprite2D animations;
-	private EnemyStateMachine StateMachine;
+	[Export]private EnemyStateMachine StateMachine;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		patrolComponent.Init(PatrolMarkersRoot);
 		animations = GetNode<AnimatedSprite2D>("EnemySprite");
-		StateMachine = GetNode<EnemyStateMachine>("StateMachine");
 		StateMachine.Init(this, animations);
 	}
 

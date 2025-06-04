@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://w50h2eiaeidk"]
+[gd_scene load_steps=12 format=3 uid="uid://w50h2eiaeidk"]
 
 [ext_resource type="Script" uid="uid://btjmsn3tl5t4g" path="res://Scripts/EnemyScripts/Enemy.cs" id="1_epg4t"]
 [ext_resource type="Texture2D" uid="uid://dujuwn608iixv" path="res://icon.svg" id="1_iifgy"]
+[ext_resource type="PackedScene" uid="uid://d1nk0u3eukeqr" path="res://patrol_using_points_component.tscn" id="2_hb8ge"]
 [ext_resource type="Script" uid="uid://c2wkl6p1okfxc" path="res://EnemyStateMachine.cs" id="4_epg4t"]
 [ext_resource type="Script" uid="uid://cwafsbubt83tn" path="res://Scripts/EnemyScripts/RoamingState.cs" id="4_wujgv"]
 [ext_resource type="PackedScene" uid="uid://co8ycjt0c8n6h" path="res://Components/hurt_box_component.tscn" id="6_3yqyl"]
@@ -25,11 +26,14 @@ size = Vector2(124, 125)
 [sub_resource type="CircleShape2D" id="CircleShape2D_e1ltt"]
 radius = 64.0312
 
-[node name="Enemy" type="CharacterBody2D"]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("patrolComponent", "StateMachine")]
 script = ExtResource("1_epg4t")
 WalkSpeed = 60.0
+patrolComponent = NodePath("Components/PatrolUsingPointsComponent")
+StateMachine = NodePath("StateMachine")
 
 [node name="EnemySprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, 0)
 sprite_frames = SubResource("SpriteFrames_hb8ge")
 animation = &"defult"
 
@@ -38,7 +42,7 @@ visible = false
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_e1ltt")
 
-[node name="StateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("intialState")]
 script = ExtResource("4_epg4t")
 intialState = NodePath("Roaming")
 
@@ -50,24 +54,29 @@ animationName = "default"
 
 [node name="Chase" type="Node" parent="StateMachine"]
 
-[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("health") instance=ExtResource("6_3yqyl")]
-visible = false
-collision_layer = 0
-collision_mask = 8
-health = NodePath("../HitBoxComponent/HealthComponent")
+[node name="Components" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBoxComponent"]
-position = Vector2(-1, 0)
-shape = SubResource("RectangleShape2D_e1ltt")
+[node name="PatrolUsingPointsComponent" parent="Components" instance=ExtResource("2_hb8ge")]
 
-[node name="HitBoxComponent" parent="." instance=ExtResource("7_hb8ge")]
+[node name="HealthComponent" parent="Components" node_paths=PackedStringArray("collision") instance=ExtResource("7_wujgv")]
+collision = NodePath("../HurtBoxComponent/CollisionShape2D")
+
+[node name="HitBoxComponent" parent="Components" instance=ExtResource("7_hb8ge")]
 collision_layer = 16
 collision_mask = 0
 
-[node name="HealthComponent" parent="HitBoxComponent" instance=ExtResource("7_wujgv")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitBoxComponent"]
 position = Vector2(-2, 0)
 shape = SubResource("CircleShape2D_e1ltt")
 
-[connection signal="HealthDepleted" from="HitBoxComponent/HealthComponent" to="." method="OnHealthDepleted"]
+[node name="HurtBoxComponent" parent="Components" node_paths=PackedStringArray("health") instance=ExtResource("6_3yqyl")]
+visible = false
+collision_layer = 0
+collision_mask = 8
+health = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtBoxComponent"]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_e1ltt")
+
+[connection signal="HealthDepleted" from="Components/HealthComponent" to="." method="OnHealthDepleted"]

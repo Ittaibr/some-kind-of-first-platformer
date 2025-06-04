@@ -17,6 +17,7 @@ public partial class EnemyStateMachine : StateMachine
 				s.stateMachine = this;
 				s.Ready();
 		}
+		currentState = (E)currentState;
 		currentState.Enter();
 
 	}
