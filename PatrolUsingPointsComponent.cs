@@ -2,16 +2,17 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Schema;
 
 public partial class PatrolUsingPointsComponent : Node2D
 {
 	private Node2D positionsNode { get; set; }
-	private Marker2D[] positions { get; set; }
+	private List<Marker2D> positions { get; set; } = new List<Marker2D>();
 	private Random rnd = new Random();
-	private Stack<Marker2D>tempPositions;
+	private Stack<Marker2D>tempPositions = new Stack<Marker2D>();
 	private Marker2D currentPosition;
 	public Vector2 direction{ get; set; } = Vector2.Zero;
-	private bool IsShuffle { get; set; } = false;
+	[Export ]private bool IsShuffle { get; set; } = false;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -19,23 +20,41 @@ public partial class PatrolUsingPointsComponent : Node2D
 	}
 	public void Init(Node2D root)
 	{
+		if (root == null)
+		{
+			GD.PrintErr("PatrolUsingPointsComponent.Init called with null root!");
+			return;
+		}
 		positionsNode = root;
 		var temp = positionsNode.GetChildren();
-		foreach (Marker2D s in temp)
+		foreach (var s in temp)
 		{
-			positions.Append(s);
+			if (s is Marker2D marker)
+			{
+				positions.Add(marker);
+			}
 		}
 		ReloadPositions();
 		LoadNextPosition();
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-		if (positionsNode != null)
+		if (positionsNode != null && currentPosition != null)
 		{
-			if (GlobalPosition.DistanceTo(currentPosition.Position) < 10)
+			float distance = GlobalPosition.DistanceTo(currentPosition.Position);
+			if (distance < 10f)
 			{
-				ReloadPositions();
+				// Snap to the marker to avoid jitter
+				GlobalPosition = currentPosition.Position;
+				LoadNextPosition();
 			}
+			direction = ToLocal(currentPosition.Position).Normalized();
+
+			// You should move the enemy towards the marker here, if not handled elsewhere
+			// Example:
+			// Vector2 moveDir = (currentPosition.Position - GlobalPosition).Normalized();
+			// float speed = 100f;
+			// GlobalPosition += moveDir * speed * (float)delta;
 		}
 	}
 
@@ -43,7 +62,7 @@ public partial class PatrolUsingPointsComponent : Node2D
 	{
 		foreach (Marker2D s in positions)
 		{
-			tempPositions.Append(s);
+			tempPositions.Push(s);
 		}
 
 		if (IsShuffle)
@@ -54,12 +73,15 @@ public partial class PatrolUsingPointsComponent : Node2D
 
 	private void LoadNextPosition()
 	{
-		if (tempPositions.First() == null)
+		if (tempPositions.Count == 0)
 		{
 			ReloadPositions();
 		}
-		currentPosition = tempPositions.Pop();
-		direction = ToLocal(currentPosition.Position).Normalized();
+		if (tempPositions.Count != 0)
+		{
+			currentPosition = tempPositions.Pop();
+			direction = ToLocal(currentPosition.Position).Normalized();
+		}
 
 	}
 

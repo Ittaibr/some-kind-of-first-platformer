@@ -25,10 +25,7 @@ namespace Game.Component
 			return Immortal;
 		}
 
-		private void SetImortalityTimeout()
-		{
-			SetImortality(false);
-		}
+	
 		public void SetTemporaryImmortalityTimer(double time)
 		{
 			if (immortalityTimer == null)
@@ -37,13 +34,15 @@ namespace Game.Component
 				immortalityTimer.OneShot = true;
 				AddChild(immortalityTimer);
 			}
-			if (immortalityTimer.IsConnected(nameof(immortalityTimer.Timeout), Callable.From(() => SetImortality(false))))
+
+			// Disconnect previous connections if any
+			if (immortalityTimer.IsConnected("timeout", new Callable(this,nameof(OnImmortalityTimeout))))
 			{
-				immortalityTimer.Timeout -= () => SetImortality(false);
+				immortalityTimer.Disconnect("timeout", new Callable(this, nameof(OnImmortalityTimeout)));
 			}
 
 			immortalityTimer.WaitTime = time;
-			immortalityTimer.Timeout += () => SetImortality(false);
+			immortalityTimer.Connect("timeout", new Callable(this, nameof(OnImmortalityTimeout)));
 			Immortal = true;
 			immortalityTimer.Start();
 
@@ -122,7 +121,9 @@ namespace Game.Component
 			Health = MaxHealth;
 		}
 
-		// Called every frame. 'delta' is the elapsed time since the previous frame.
-		
+		private void OnImmortalityTimeout()
+		{
+			SetImortality(false);
+		}
 	}
 }

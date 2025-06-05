@@ -29,6 +29,9 @@ public partial class Player : CharacterBody2D
 	private void OnHealthDepleted()
 	{
 		QueueFree();
+		CallDeferred(nameof(ReloadSceneSafely));	}
+	private void ReloadSceneSafely()
+	{
 		GetTree().ReloadCurrentScene();
 	}
 }

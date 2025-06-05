@@ -37,6 +37,7 @@ public partial class RoamingState : EnemyState
 			velocity.X = (float)walkSpeed;
 		}
 		parent.Velocity = velocity;
+	
 
 	}
 	public override void Update(double delta)

@@ -10,16 +10,17 @@ public partial class EnemyStateMachine : StateMachine
 	public void Init(Enemy parent, AnimatedSprite2D animations)
 	{
 		base.Init();
-		foreach (EnemyState s in GetChildren())
+		foreach (Node node in GetChildren())
 		{
+			if (node is EnemyState s)
+			{
 				s.parent = parent;
 				s.animations = animations;
 				s.stateMachine = this;
 				s.Ready();
+			}
 		}
-		currentState = (E)currentState;
 		currentState.Enter();
-
 	}
 	public override void PhysicsUpdate(double delta)
 	{
