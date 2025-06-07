@@ -383,10 +383,11 @@ position = Vector2(9.75, 0.25)
 shape = SubResource("RectangleShape2D_bwjto")
 disabled = true
 
-[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("health") instance=ExtResource("9_q13i1")]
+[node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("moveInterface", "health") instance=ExtResource("9_q13i1")]
 disable_mode = 1
 collision_layer = 0
 collision_mask = 16
+moveInterface = NodePath("../PlayerMoveComp")
 health = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBoxComponent"]

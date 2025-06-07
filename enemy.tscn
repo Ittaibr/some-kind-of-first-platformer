@@ -46,10 +46,11 @@ shape = SubResource("RectangleShape2D_e1ltt")
 script = ExtResource("4_epg4t")
 intialState = NodePath("Roaming")
 
-[node name="Roaming" type="Node" parent="StateMachine"]
+[node name="Roaming" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitBox")]
 script = ExtResource("4_wujgv")
 totalWalkDistance = 500.0
 timeLengthToWalk = 5.0
+hitBox = NodePath("../../Components/HitBoxComponent")
 animationName = "default"
 
 [node name="Chase" type="Node" parent="StateMachine"]
@@ -65,6 +66,7 @@ collision = NodePath("../HurtBoxComponent/CollisionShape2D")
 [node name="HitBoxComponent" parent="Components" instance=ExtResource("7_hb8ge")]
 collision_layer = 16
 collision_mask = 0
+KnockbackVelocity = Vector2(300, 2000)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitBoxComponent"]
 position = Vector2(-2, 0)

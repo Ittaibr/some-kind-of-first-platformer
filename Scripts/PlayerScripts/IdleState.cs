@@ -6,6 +6,10 @@ using System.Runtime.CompilerServices;
 
 public partial class IdleState : PlayerState
 {
+	
+	[Export]private double timer = 10;
+	private double tempTimer = 0;
+	private double knockbackVelocity = 0;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -21,7 +25,7 @@ public partial class IdleState : PlayerState
 	public override void PhysicsUpdate(double delta)
 	{
 		stateMachine.DashCoolDownTimer -= delta;
-
+		
 		parent.Velocity = velocity;
 		parent.MoveAndSlide();
 		TransferChecks();

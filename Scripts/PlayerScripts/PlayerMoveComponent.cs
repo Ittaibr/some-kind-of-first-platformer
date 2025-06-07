@@ -8,6 +8,7 @@ public partial class PlayerMoveComponent : MoveInterface
 	{
 
 	}
+	
 	public override double GetMovmentDirection()
 	{
 		if (Input.IsActionPressed("move_left"))
@@ -19,6 +20,14 @@ public partial class PlayerMoveComponent : MoveInterface
 			return 1;
 		}
 		return 0;
+	}
+	public void SetKnockbackVelocity(double velocity)
+	{
+		knockbackVelocity = new Vector2((float)velocity, 0);
+	}
+	public double GetKnockbackVelocity()
+	{
+		return knockbackVelocity.X;
 	}
 	public override bool IsWantSlash()
 	{

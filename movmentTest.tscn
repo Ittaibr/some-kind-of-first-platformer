@@ -1268,5 +1268,20 @@ PatrolMarkersRoot = NodePath("../Node")
 [node name="Camera2D" type="Camera2D" parent="Enemy"]
 enabled = false
 
+[node name="Enemy2" parent="." node_paths=PackedStringArray("PatrolMarkersRoot") instance=ExtResource("9_30c2j")]
+position = Vector2(-211, 315)
+scale = Vector2(0.2, 0.2)
+collision_layer = 8
+collision_mask = 7
+PatrolMarkersRoot = NodePath("../Node2")
+
 [node name="player" parent="." instance=ExtResource("1_mhsm2")]
-position = Vector2(-197, 248)
+position = Vector2(-199, 243)
+
+[node name="Node2" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="Node2"]
+position = Vector2(-235, 315)
+
+[node name="Marker2D2" type="Marker2D" parent="Node2"]
+position = Vector2(-142, 315)

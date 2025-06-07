@@ -33,7 +33,7 @@ public partial class PlayerStateMachine : Node
 				s.parent = parent;
 				s.animations = animations;
 				s.stateMachine = this;
-				s.MoveComp = moveComp;
+				s.MoveComp = (PlayerMoveComponent)moveComp;
 
 				s.Ready();
 				s.Exit();

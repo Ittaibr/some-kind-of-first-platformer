@@ -4,6 +4,7 @@ using System;
 
 public partial class HurtBoxComponent : Area2D
 {
+	[Export] MoveInterface moveInterface;
 	[Export] HealthComponent health;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -17,6 +18,7 @@ public partial class HurtBoxComponent : Area2D
 		if (body is HitBoxComponent)
 		{
 			HitBoxComponent hitBox = (HitBoxComponent)body;
+			moveInterface.SetKnockbackVelocity(hitBox.KnockbackVelocity);
 			health.SetHealth(health.GetHealth() - hitBox.Damage);
 		}
 	}

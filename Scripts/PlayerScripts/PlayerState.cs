@@ -12,7 +12,7 @@ public partial class PlayerState : Node
 	protected Vector2 velocity;
 	public PlayerStateMachine stateMachine;
 	public AnimatedSprite2D animations { get; set;}
-	public MoveInterface MoveComp { get; set;}
+	public PlayerMoveComponent MoveComp { get; set;}
 
 	public CharacterBody2D parent;
 
@@ -32,6 +32,14 @@ public partial class PlayerState : Node
 	protected virtual double GetMovmentDirection()
 	{
 		return MoveComp.GetMovmentDirection();
+	}
+	protected virtual void SetKnockbackVelocity(Vector2 velocity)
+	{
+		MoveComp.SetKnockbackVelocity(velocity);
+	}
+	protected virtual double GetKnockbackVelocity()
+	{
+		return MoveComp.GetKnockbackVelocity();
 	}
 	protected virtual bool IsWantDown()
 	{

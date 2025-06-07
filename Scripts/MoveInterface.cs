@@ -3,11 +3,17 @@ using System;
 
 public partial class MoveInterface : Node
 {
+	protected Vector2 knockbackVelocity{ get; set; } = Vector2.Zero;
+
+	public virtual void SetKnockbackVelocity(Vector2 velocity)
+	{
+		knockbackVelocity = velocity;
+	}
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 	}
-
+	
 	
 	public virtual double GetMovmentDirection()
 	{

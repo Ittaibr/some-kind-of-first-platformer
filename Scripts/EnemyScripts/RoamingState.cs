@@ -7,7 +7,8 @@ public partial class RoamingState : EnemyState
 	[Export]private double totalWalkDistance = 100;
 	private double walkDistance = 0;
 	[Export] private double timeLengthToWalk;
-	private double walkTimer =0;
+	[Export] private HitBoxComponent hitBox;
+	private double walkTimer = 0;
 	private Vector2 direction;
 	
 
@@ -31,9 +32,16 @@ public partial class RoamingState : EnemyState
 		if (direction.X < 0)
 		{
 			velocity.X = -(float)walkSpeed;
+			var vect = hitBox.KnockbackVelocity;
+			vect.X = -1 * Mathf.Abs(hitBox.KnockbackVelocity.X);
+			hitBox.KnockbackVelocity = vect;
+
 		}
 		else
 		{
+			var vect = hitBox.KnockbackVelocity;
+			vect.X = Mathf.Abs(hitBox.KnockbackVelocity.X);
+			hitBox.KnockbackVelocity = vect;
 			velocity.X = (float)walkSpeed;
 		}
 		parent.Velocity = velocity;

@@ -3,6 +3,9 @@ using System;
 
 public partial class RunState : PlayerState
 {
+	[Export]private double timer = 10;
+	private double tempTimer = 0;
+	private double knockbackVelocity = 0;
 	// Called when the node enters the scene tree for the first time.
 	public override void Enter()
 	{
@@ -33,7 +36,8 @@ public partial class RunState : PlayerState
 		}
 		else { velocity.X = Mathf.MoveToward(velocity.X, 0, (float)runDecc * speed); }
 		if (velocity.X > speed){velocity.X = speed;}
-
+		
+		
 		parent.Velocity = velocity;
 		parent.MoveAndSlide();
 		TransferChecks();
