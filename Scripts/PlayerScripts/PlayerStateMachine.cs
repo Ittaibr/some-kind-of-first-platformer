@@ -22,7 +22,7 @@ public partial class PlayerStateMachine : Node
 	{
 		DashCoolDownTimer = DashCoolDown;
 	}
-	public void Init(CharacterBody2D parent, AnimatedSprite2D animations, MoveInterface moveComp)
+	public void Init(Player parent, AnimatedSprite2D animations, MoveInterface moveComp)
 	{
 		states = new Dictionary<string, PlayerState>();
 		foreach (Node node in GetChildren())

@@ -25,9 +25,19 @@ public partial class EnemyStateMachine : StateMachine
 	public override void PhysicsUpdate(double delta)
 	{
 		base.PhysicsUpdate(delta);
-		 }
+	}
+	private void OnHit(int damage)
+	{
+		TransitionTo("Hit");
+	}
+    public override void TransitionTo(string key)
+    {
+		GD.Print("Transitioning to state: " + key);
+        base.TransitionTo(key);
+    }
+
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	
+
 }

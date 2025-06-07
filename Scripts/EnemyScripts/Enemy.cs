@@ -6,6 +6,7 @@ public partial class Enemy : CharacterBody2D
 	[Export] public Node2D PatrolMarkersRoot;
 	[Export] public double WalkSpeed { get; set; }
 	[Export]public PatrolUsingPointsComponent patrolComponent;
+	[Export] public CharacterMoveComponent MoveComp;
 	public AnimatedSprite2D animations;
 	[Export]private EnemyStateMachine StateMachine;
 

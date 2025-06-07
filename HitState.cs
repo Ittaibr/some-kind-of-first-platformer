@@ -32,6 +32,8 @@ public partial class HitState :PlayerState
 	}
 	public override void PhysicsUpdate(double delta)
 	{
+		velocity.Y += (float)(delta * parent.GetGravity().Y);
+		
 		base.PhysicsUpdate(delta);
 		parent.Velocity = velocity;
 		parent.MoveAndSlide();

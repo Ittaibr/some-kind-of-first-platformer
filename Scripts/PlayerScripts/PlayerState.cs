@@ -14,7 +14,7 @@ public partial class PlayerState : Node
 	public AnimatedSprite2D animations { get; set;}
 	public PlayerMoveComponent MoveComp { get; set;}
 
-	public CharacterBody2D parent;
+	public Player parent;
 
 	public virtual void Enter()
 	{

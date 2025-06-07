@@ -42,10 +42,15 @@ public partial class PatrolUsingPointsComponent : Node2D
 		if (positionsNode != null && currentPosition != null)
 		{
 			float distance = GlobalPosition.DistanceTo(currentPosition.Position);
-			if (distance < 10f)
+			if (distance < 2f)
 			{
 				// Snap to the marker to avoid jitter
 				GlobalPosition = currentPosition.Position;
+				direction = Vector2.Zero;
+				if (positions.Count == 0)
+				{
+					ReloadPositions();
+				}
 				LoadNextPosition();
 			}
 			direction = ToLocal(currentPosition.Position).Normalized();

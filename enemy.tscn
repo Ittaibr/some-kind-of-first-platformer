@@ -1,13 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://w50h2eiaeidk"]
+[gd_scene load_steps=14 format=3 uid="uid://w50h2eiaeidk"]
 
 [ext_resource type="Script" uid="uid://btjmsn3tl5t4g" path="res://Scripts/EnemyScripts/Enemy.cs" id="1_epg4t"]
 [ext_resource type="Texture2D" uid="uid://dujuwn608iixv" path="res://icon.svg" id="1_iifgy"]
 [ext_resource type="PackedScene" uid="uid://d1nk0u3eukeqr" path="res://patrol_using_points_component.tscn" id="2_hb8ge"]
 [ext_resource type="Script" uid="uid://c2wkl6p1okfxc" path="res://EnemyStateMachine.cs" id="4_epg4t"]
 [ext_resource type="Script" uid="uid://cwafsbubt83tn" path="res://Scripts/EnemyScripts/RoamingState.cs" id="4_wujgv"]
+[ext_resource type="Script" uid="uid://bnjfyxmrxh436" path="res://EnemyHitState.cs" id="5_dxifv"]
 [ext_resource type="PackedScene" uid="uid://co8ycjt0c8n6h" path="res://Components/hurt_box_component.tscn" id="6_3yqyl"]
 [ext_resource type="PackedScene" uid="uid://bwj6dwlpghm5n" path="res://Components/hit_box_component.tscn" id="7_hb8ge"]
 [ext_resource type="PackedScene" uid="uid://bs7go3sq33q67" path="res://Components/health_component.tscn" id="7_wujgv"]
+[ext_resource type="PackedScene" uid="uid://ctrp2yl28gquh" path="res://character_move_component.tscn" id="10_pwjut"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hb8ge"]
 animations = [{
@@ -26,10 +28,11 @@ size = Vector2(124, 125)
 [sub_resource type="CircleShape2D" id="CircleShape2D_e1ltt"]
 radius = 64.0312
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("patrolComponent", "StateMachine")]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("patrolComponent", "MoveComp", "StateMachine")]
 script = ExtResource("1_epg4t")
 WalkSpeed = 60.0
 patrolComponent = NodePath("Components/PatrolUsingPointsComponent")
+MoveComp = NodePath("Components/CharacterMoveComponent")
 StateMachine = NodePath("StateMachine")
 
 [node name="EnemySprite" type="AnimatedSprite2D" parent="."]
@@ -38,7 +41,6 @@ sprite_frames = SubResource("SpriteFrames_hb8ge")
 animation = &"defult"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_e1ltt")
 
@@ -55,6 +57,11 @@ animationName = "default"
 
 [node name="Chase" type="Node" parent="StateMachine"]
 
+[node name="Hit" type="Node" parent="StateMachine"]
+script = ExtResource("5_dxifv")
+timer = 0.3
+roamingStatePath = NodePath("../Roaming")
+
 [node name="Components" type="Node2D" parent="."]
 
 [node name="PatrolUsingPointsComponent" parent="Components" instance=ExtResource("2_hb8ge")]
@@ -66,20 +73,24 @@ collision = NodePath("../HurtBoxComponent/CollisionShape2D")
 [node name="HitBoxComponent" parent="Components" instance=ExtResource("7_hb8ge")]
 collision_layer = 16
 collision_mask = 0
-KnockbackVelocity = Vector2(300, 2000)
+KnockbackVelocity = Vector2(50, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitBoxComponent"]
 position = Vector2(-2, 0)
 shape = SubResource("CircleShape2D_e1ltt")
 
-[node name="HurtBoxComponent" parent="Components" node_paths=PackedStringArray("health") instance=ExtResource("6_3yqyl")]
+[node name="HurtBoxComponent" parent="Components" node_paths=PackedStringArray("moveInterface", "health") instance=ExtResource("6_3yqyl")]
 visible = false
 collision_layer = 0
 collision_mask = 8
+moveInterface = NodePath("../CharacterMoveComponent")
 health = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtBoxComponent"]
 position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_e1ltt")
 
+[node name="CharacterMoveComponent" parent="Components" instance=ExtResource("10_pwjut")]
+
 [connection signal="HealthDepleted" from="Components/HealthComponent" to="." method="OnHealthDepleted"]
+[connection signal="ReceivedDamage" from="Components/HealthComponent" to="StateMachine" method="OnHit"]

@@ -6,6 +6,7 @@ public partial class Player : CharacterBody2D
 	public AnimatedSprite2D animations;
 	private PlayerStateMachine StateMachine;
 	public PlayerMoveComponent moveComponent;
+	[Export] public HitBoxComponent hitBox;
 
 
 	// Called when the node enters the scene tree for the first time.

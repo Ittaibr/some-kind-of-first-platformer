@@ -20,7 +20,8 @@ public partial class RoamingState : EnemyState
 	}
 	public override void Enter()
 	{ 
-		
+		GD.Print("RoamingState entered");
+		GD.Print("patrolComponent direction is " + parent.patrolComponent.direction);
 	}
 	public override void Exit()
 	{
@@ -37,12 +38,16 @@ public partial class RoamingState : EnemyState
 			hitBox.KnockbackVelocity = vect;
 
 		}
-		else
+		else if (direction.X > 0)
 		{
 			var vect = hitBox.KnockbackVelocity;
 			vect.X = Mathf.Abs(hitBox.KnockbackVelocity.X);
 			hitBox.KnockbackVelocity = vect;
 			velocity.X = (float)walkSpeed;
+		}
+		else
+		{
+			velocity.X = 0;
 		}
 		parent.Velocity = velocity;
 	

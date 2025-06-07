@@ -23,8 +23,14 @@ public partial class SimpleAttackState : PlayerState
 		if (animations.FlipH)
 		{
 			vec.X = -Mathf.Abs(vec.X);
+			parent.hitBox.KnockbackVelocity = new Vector2(-Mathf.Abs(parent.hitBox.KnockbackVelocity.X), parent.hitBox.KnockbackVelocity.Y);
+
 		}
-		else{vec.X = Mathf.Abs(vec.X);}
+		else
+		{
+			vec.X = Mathf.Abs(vec.X);
+			parent.hitBox.KnockbackVelocity = new Vector2(Mathf.Abs(parent.hitBox.KnockbackVelocity.X), parent.hitBox.KnockbackVelocity.Y);
+		}
 		collision.Position = vec;
 
 		GD.Print("simpleAttackState entered");
