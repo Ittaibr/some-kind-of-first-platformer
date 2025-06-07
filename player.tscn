@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://udflyx6jsf2a"]
+[gd_scene load_steps=66 format=3 uid="uid://udflyx6jsf2a"]
 
 [ext_resource type="Script" uid="uid://b5eyv3116ao5y" path="res://Scripts/PlayerScripts/Player.cs" id="1_b26j0"]
 [ext_resource type="Texture2D" uid="uid://gasahsauq5u4" path="res://art/Warrior/SpriteSheet/Warrior_Sheet-Effect.png" id="2_nvl01"]
@@ -24,7 +24,7 @@
 size = Vector2(10.3333, 18.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q6r6c"]
-size = Vector2(8, 18)
+size = Vector2(4.66667, 14.6667)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u1c27"]
 atlas = ExtResource("2_nvl01")
@@ -368,6 +368,10 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pylmc"]
+radius = 3.33333
+height = 14.6667
+
 [node name="player" type="CharacterBody2D" node_paths=PackedStringArray("hitBox")]
 scale = Vector2(1.5, 1.5)
 collision_layer = 16
@@ -378,7 +382,7 @@ hitBox = NodePath("HitBoxComponent")
 [node name="HitBoxComponent" parent="." instance=ExtResource("2_u1c27")]
 collision_layer = 8
 collision_mask = 0
-KnockbackVelocity = Vector2(50, 0)
+KnockbackVelocity = Vector2(42, 0)
 
 [node name="SwordHitbox" type="CollisionShape2D" parent="HitBoxComponent"]
 position = Vector2(10.1667, 0.25)
@@ -393,19 +397,17 @@ moveInterface = NodePath("../PlayerMoveComp")
 health = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBoxComponent"]
-position = Vector2(1, 3)
+position = Vector2(0.666667, 2.66667)
 shape = SubResource("RectangleShape2D_q6r6c")
 
 [node name="playerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_0hol4")
-animation = &"Attack"
-frame = 6
+animation = &"Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, 3)
-shape = SubResource("RectangleShape2D_q6r6c")
+position = Vector2(0, 3.33333)
+shape = SubResource("CapsuleShape2D_pylmc")
 
 [node name="jumpSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_hqtel")
@@ -445,9 +447,9 @@ script = ExtResource("6_2hs0m")
 
 [node name="Dash" type="Node" parent="StateMachine"]
 script = ExtResource("9_nvl01")
-DashStrength = 500.0
-timeLengthToDash = 2.0
-totalDashDistance = 600.0
+DashStrength = 300.0
+timeLengthToDash = 0.3
+totalDashDistance = 420.0
 animationName = "Dash"
 
 [node name="Fall" type="Node" parent="StateMachine"]

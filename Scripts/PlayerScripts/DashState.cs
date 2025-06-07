@@ -24,6 +24,8 @@ public partial class DashState : PlayerState
 		dashTimer = timeLengthToDash;
 		GD.Print("dash has" + stateMachine.jumpsLeft + "jumps left");
 
+		
+
 
 	}
 
@@ -39,7 +41,10 @@ public partial class DashState : PlayerState
 	public override void PhysicsUpdate(double delta)
 	{
 		dashDistance += Mathf.Abs(parent.Position.DistanceTo(pastPos));
-		dashTimer -= delta;
+		if (parent.IsOnWall())
+		{
+			dashTimer -= delta; // double the dash timer if hit a wall
+		}
 
 		parent.Velocity = velocity;
 		parent.MoveAndSlide();

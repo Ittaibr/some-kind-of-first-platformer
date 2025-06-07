@@ -23,10 +23,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e1ltt"]
-size = Vector2(124, 125)
+size = Vector2(79, 78)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e1ltt"]
-radius = 64.0312
+radius = 59.0
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("patrolComponent", "MoveComp", "StateMachine")]
 script = ExtResource("1_epg4t")
@@ -41,7 +41,6 @@ sprite_frames = SubResource("SpriteFrames_hb8ge")
 animation = &"defult"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_e1ltt")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("intialState")]
