@@ -20,7 +20,8 @@ public partial class WallSlideState : PlayerState
 		parent.Velocity = velocity; // Update the player's velocity
 		parent.MoveAndSlide(); // Move the player down the wall
 		TransferChecks(); // Check for transitions to other states
-		animations.Play(animationName);
+		//animations.Play(animationName);
+
 
 	}
 	public override void Enter()
@@ -36,29 +37,35 @@ public partial class WallSlideState : PlayerState
 	{
 		GD.Print("Wall slide exited");
 		base.Exit();
+		stateMachine.jumpsLeft = stateMachine.jumpsInAir; // Reset jumps left when exiting wall slide
+		velocity.Y = 0; // Reset vertical velocity when exiting wall slide
+		parent.Velocity = velocity; // Update the player's velocity
 		
-		animations.Stop();
 	}
 	protected override void TransferChecks()
 	{
 		if (IsWantJump())
 		{
 			if (animations.FlipH)
-		  {
-			velocity.X = jumpXvelocity;
-		  }
+			{
+				velocity.X = jumpXvelocity;
+			}
 			else
-		  {
-			velocity.X = -jumpXvelocity;
-		  }
-		  parent.Velocity = velocity; // Update the player's velocity
-		  //parent.MoveAndSlide(); // Move the player off the wall
+			{
+				velocity.X = -jumpXvelocity;
+			}
+			parent.Velocity = velocity; // Update the player's velocity
 			TransitionTo("Jump");
 		}
 		else if (IsWantDown())
 		{
 			TransitionTo("Fall");
 		}
+		else if (parent.IsOnFloor())
+		{
+			
+			TransitionTo("Idle");
+		}	
 
 	}
 }

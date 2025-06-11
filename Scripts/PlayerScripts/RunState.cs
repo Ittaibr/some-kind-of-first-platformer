@@ -16,7 +16,10 @@ public partial class RunState : PlayerState
 		stateMachine.jumpsLeft = stateMachine.jumpsInAir;
 
 	}
-	public override void Exit() { }
+	public override void Exit()
+	{ 
+		base.Exit();
+	}
 
 	protected virtual double GetMovment()
 	{
@@ -53,7 +56,7 @@ public partial class RunState : PlayerState
 	protected override void TransferChecks()
 	{
 		var movment = GetMovmentDirection() * speed;
-		
+
 		if (velocity.X == 0 && movment == 0)
 		{
 			TransitionTo("Idle");

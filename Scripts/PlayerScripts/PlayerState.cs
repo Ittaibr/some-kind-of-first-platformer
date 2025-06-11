@@ -28,6 +28,10 @@ public partial class PlayerState : Node
 		
 
 	}
+	public virtual void Exit()
+	{
+		animations.Stop();
+	}
 
 	protected virtual double GetMovmentDirection()
 	{
@@ -60,10 +64,7 @@ public partial class PlayerState : Node
 	}
 
 
-	public virtual void Exit()
-	{
-
-	}
+	
 	public virtual void Ready()
 	{
 

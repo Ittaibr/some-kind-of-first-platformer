@@ -21,6 +21,7 @@ public partial class FallState : PlayerState
 	}
 	public override void Exit()
 	{
+		base.Exit();
 		parent.SetCollisionMaskValue(2, true);
 	}
 	public override void Update(double delta)
@@ -59,11 +60,12 @@ public partial class FallState : PlayerState
 
 		parent.Velocity = velocity;
 		parent.MoveAndSlide();
-		TransferChecks();
 		if (!parent.IsOnFloor())
 		{
 			animations.Play(animationName);
 		}
+		TransferChecks();
+
 	}
 
 	protected override void TransferChecks()

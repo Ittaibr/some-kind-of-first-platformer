@@ -20,6 +20,9 @@ public partial class IdleState : PlayerState
 		base.Enter();
 		velocity.X = 0;
 		stateMachine.jumpsLeft = stateMachine.jumpsInAir;
+		animations.Frame = 0;
+		animations.Stop();
+		animations.Play(animationName);
 		GD.Print("Idle entered");
     }
 	public override void PhysicsUpdate(double delta)

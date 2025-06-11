@@ -66,6 +66,7 @@ public partial class SimpleAttackState : PlayerState
 	}
 	public override void Exit()
 	{
+		base.Exit();
 		collision.Disabled = true;
 
 	}

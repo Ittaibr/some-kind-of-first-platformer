@@ -24,8 +24,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bwjto"]
 size = Vector2(10.3333, 18.5)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_q6r6c"]
-size = Vector2(4.66667, 14.6667)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbfsw"]
+radius = 3.0
+height = 13.3333
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u1c27"]
 atlas = ExtResource("2_nvl01")
@@ -409,7 +410,7 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pylmc"]
 radius = 2.66667
-height = 13.3333
+height = 14.6667
 
 [node name="player" type="CharacterBody2D" node_paths=PackedStringArray("hitBox")]
 scale = Vector2(1.5, 1.5)
@@ -437,13 +438,12 @@ health = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBoxComponent"]
 position = Vector2(0.666667, 2.66667)
-shape = SubResource("RectangleShape2D_q6r6c")
+shape = SubResource("CapsuleShape2D_pbfsw")
 
 [node name="playerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_0hol4")
-animation = &"WallSlide"
-frame_progress = 0.26708
+animation = &"Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 3.33333)

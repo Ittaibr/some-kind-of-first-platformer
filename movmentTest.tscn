@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://bvtfggwm0spt3"]
+[gd_scene load_steps=22 format=4 uid="uid://bvtfggwm0spt3"]
 
 [ext_resource type="PackedScene" uid="uid://udflyx6jsf2a" path="res://player.tscn" id="1_mhsm2"]
 [ext_resource type="Texture2D" uid="uid://bwma5b00agcb0" path="res://art/Assets/Environments/HauntedForest/Layers/back.png" id="3_kmvhl"]
@@ -36,8 +36,6 @@ tile_data = PackedInt32Array(0, 917510, 4, 65536, 917510, 5, 131072, 917510, 6, 
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_5ht8e"]
 tile_data = PackedInt32Array(0, 917510, 4, 65536, 917510, 5, 131072, 917510, 6, 196608, 917510, 7, 1, 983046, 4, 65537, 983046, 5, 131073, 983046, 6, 196609, 983046, 7)
-
-[sub_resource type="TileMapPattern" id="TileMapPattern_ikq35"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_rb4ph"]
 tile_data = PackedInt32Array(0, 131078, 5, 65536, 131078, 6, 131072, 131078, 7, 196608, 131078, 8, 262144, 131078, 9, 1, 196614, 5, 65537, 196614, 6, 131073, 196614, 7, 196609, 196614, 8, 262145, 196614, 9)
@@ -568,8 +566,7 @@ sources/7 = SubResource("TileSetAtlasSource_iv23u")
 pattern_0 = SubResource("TileMapPattern_rxbcs")
 pattern_1 = SubResource("TileMapPattern_30c2j")
 pattern_2 = SubResource("TileMapPattern_5ht8e")
-pattern_3 = SubResource("TileMapPattern_ikq35")
-pattern_4 = SubResource("TileMapPattern_rb4ph")
+pattern_3 = SubResource("TileMapPattern_rb4ph")
 
 [node name="Node2D" type="Node2D"]
 
@@ -579,7 +576,8 @@ stream = ExtResource("7_kmvhl")
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2(0, 0)
+motion_scale = Vector2(0.05, 0.05)
+motion_mirroring = Vector2(390, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
 position = Vector2(0, -162)
