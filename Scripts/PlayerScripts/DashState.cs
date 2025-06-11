@@ -14,8 +14,12 @@ public partial class DashState : PlayerState
 
 	public override void Enter()
 	{
+		animations.Frame = 0;
+
 		base.Enter();
 		GD.Print("dash entered");
+
+
 
 		pastPos = parent.Position;
 		DashStrength *= GetMovmentDirection();
@@ -23,6 +27,7 @@ public partial class DashState : PlayerState
 		velocity.Y = 0;
 		dashTimer = timeLengthToDash;
 		GD.Print("dash has" + stateMachine.jumpsLeft + "jumps left");
+		animations.Play(animationName);
 
 		
 

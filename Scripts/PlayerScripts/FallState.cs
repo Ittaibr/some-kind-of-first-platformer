@@ -8,14 +8,20 @@ public partial class FallState : PlayerState
 
 	public override void Enter()
 	{
+		
 		GD.Print("fall entered");
-		base.Enter();
-		GD.Print("fall has" + stateMachine.jumpsLeft + "jumps left");
+		speed = stateMachine.Speed;
+		runAcc = stateMachine.RunAcc;
+		runDecc = stateMachine.RunDecc;
+		gravityPush = stateMachine.GravityPush;
+		jumpDecc = stateMachine.JumpDecc;
+
+		velocity = parent.Velocity;	
 
 	}
 	public override void Exit()
 	{
-
+		parent.SetCollisionMaskValue(2, true);
 	}
 	public override void Update(double delta)
 	{
@@ -38,14 +44,14 @@ public partial class FallState : PlayerState
 			parent.SetCollisionMaskValue(2, true);
 		}
 		velocity.Y += (float)(delta * gravity);
-		
+
 
 		var movment = GetMovmentDirection() * speed;
 
 		if (movment != 0)
 		{
 			animations.FlipH = movment < 0;
-			velocity.X = (float)Mathf.MoveToward(velocity.X, movment,speed * runAcc);
+			velocity.X = (float)Mathf.MoveToward(velocity.X, movment, speed * runAcc);
 
 		}
 		else { velocity.X = Mathf.MoveToward(velocity.X, 0, (float)runDecc * speed); }
@@ -54,6 +60,10 @@ public partial class FallState : PlayerState
 		parent.Velocity = velocity;
 		parent.MoveAndSlide();
 		TransferChecks();
+		if (!parent.IsOnFloor())
+		{
+			animations.Play(animationName);
+		}
 	}
 
 	protected override void TransferChecks()
@@ -72,7 +82,21 @@ public partial class FallState : PlayerState
 			GD.Print("fall to idle");
 			TransitionTo("Idle");
 		}
-
+		else if(!parent.IsOnFloor() && parent.IsOnWall())
+		{
+			GD.Print("fall to wall slide");
+			TransitionTo("WallSlide");
+		}
+		else if (parent.IsOnFloor() && velocity.Y >= 0)
+		{
+			GD.Print("fall to run on floor");
+			TransitionTo("Run");
+		}
+		else if (IsWantDown() && !parent.IsOnFloor())
+		{
+			GD.Print("fall has in transition to fall down");
+			TransitionTo("FallDown");
+		}
 		else if (IsWantJump() && stateMachine.jumpsLeft > 0)
 		{
 			GD.Print("fall has in transition to jump" + stateMachine.jumpsLeft + "jumps left");

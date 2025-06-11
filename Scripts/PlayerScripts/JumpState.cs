@@ -17,6 +17,8 @@ public partial class JumpState : PlayerState
 		base.Enter();
 		stateMachine.jumpsLeft -= 1;
 		GD.Print("jump has " +stateMachine.jumpsLeft + " jumps left");
+		animations.Play(animationName);
+
 
 		velocity.Y = -jumpForce;
 
@@ -28,6 +30,8 @@ public partial class JumpState : PlayerState
 
 	public override void PhysicsUpdate(double delta)
 	{
+		animations.Play(animationName);
+
 		stateMachine.DashCoolDownTimer -= delta;
 
 		float gravity = parent.GetGravity().Y;
@@ -76,19 +80,19 @@ public partial class JumpState : PlayerState
 		{
 			stateMachine.TransitionTo("Run");
 		}
-		if (IsWantJump() && stateMachine.jumpsLeft > 0)
+		else if (IsWantJump() && stateMachine.jumpsLeft > 0)
 		{
 			TransitionTo("DoubleJump");
 		}
-		if (velocity.X == 0 && parent.IsOnFloor() && movment == 0)
+		else if (velocity.X == 0 && parent.IsOnFloor() && movment == 0)
 		{
 			TransitionTo("Idle");
 		}
-		if (velocity.Y >= 0)
+		else if (velocity.Y >= 0)
 		{
 			TransitionTo("Fall");
 		}
-		if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
+		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
 		{
 			TransitionTo("Dash");
 		}

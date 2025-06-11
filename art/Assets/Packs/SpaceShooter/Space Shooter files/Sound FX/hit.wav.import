@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dmgjc2frd13v7"
+path="res://.godot/imported/hit.wav-e045f7b76acc49c1f4db4cca75837933.sample"
+
+[deps]
+
+source_file="res://art/Assets/Packs/SpaceShooter/Space Shooter files/Sound FX/hit.wav"
+dest_files=["res://.godot/imported/hit.wav-e045f7b76acc49c1f4db4cca75837933.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

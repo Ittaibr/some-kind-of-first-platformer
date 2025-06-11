@@ -13,10 +13,14 @@ public partial class EnemyState : State
 		velocity = parent.Velocity;
 		animations.Play(animationName);
 	}
-    public override void TransitionTo(string key)
-    {
-        stateMachine.TransitionTo(key);
-    }
+	public override void TransitionTo(string key)
+	{
+		stateMachine.TransitionTo(key);
+	}
+	public override void Exit()
+	{
+		animations.Stop();
+	}
 
 
 }

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq.Expressions;
 
 public partial class RunState : PlayerState
 {
@@ -52,24 +53,24 @@ public partial class RunState : PlayerState
 	protected override void TransferChecks()
 	{
 		var movment = GetMovmentDirection() * speed;
-
+		
 		if (velocity.X == 0 && movment == 0)
 		{
 			TransitionTo("Idle");
 		}
-		if (IsWantJump() && parent.IsOnFloor())
+		else if (IsWantJump() && parent.IsOnFloor())
 		{
 			stateMachine.TransitionTo("Jump");
 		}
-		if (IsWantDown() || !parent.IsOnFloor())
+		else if (IsWantDown() || !parent.IsOnFloor())
 		{
 			TransitionTo("Fall");
 		}
-		if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
+		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
 		{
 			TransitionTo("Dash");
 		}
-		if (IsWantSlash())
+		else if (IsWantSlash())
 		{
 			TransitionTo("SimpleAttack");
 		}

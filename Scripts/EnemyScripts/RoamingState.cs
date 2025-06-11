@@ -36,7 +36,7 @@ public partial class RoamingState : EnemyState
 			var vect = hitBox.KnockbackVelocity;
 			vect.X = -1 * Mathf.Abs(hitBox.KnockbackVelocity.X);
 			hitBox.KnockbackVelocity = vect;
-
+			animations.FlipH = false;
 		}
 		else if (direction.X > 0)
 		{
@@ -44,6 +44,7 @@ public partial class RoamingState : EnemyState
 			vect.X = Mathf.Abs(hitBox.KnockbackVelocity.X);
 			hitBox.KnockbackVelocity = vect;
 			velocity.X = (float)walkSpeed;
+			animations.FlipH = true;
 		}
 		else
 		{

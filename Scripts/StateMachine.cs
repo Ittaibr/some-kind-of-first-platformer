@@ -22,8 +22,8 @@ public partial class StateMachine : State
 
 	public override void TransitionTo(string key){
 		if (!states.ContainsKey(key) || currentState == states[key]){
-			GD.Print("State not found or already in that state: " + key);
-			GD.Print("Current state: " + currentState);
+			//GD.Print("State not found or already in that state: " + key);
+			//GD.Print("Current state: " + currentState);
 			return;
 		}
 		currentState.Exit();
@@ -41,10 +41,10 @@ public partial class StateMachine : State
 	}
 	public override void PhysicsUpdate(double delta)
 	{
-		GD.Print(intialState);
+		//GD.Print(intialState);
 
-		GD.Print("PhysicsUpdateEntered");
-		GD.Print(currentState);
+		//GD.Print("PhysicsUpdateEntered");
+		//GD.Print(currentState);
 		currentState.PhysicsUpdate(delta);
 		currentState.TransferChecksAndOperation();
 	}
