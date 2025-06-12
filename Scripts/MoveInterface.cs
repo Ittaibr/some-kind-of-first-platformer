@@ -4,6 +4,7 @@ using System;
 public partial class MoveInterface : Node
 {
 	protected Vector2 knockbackVelocity{ get; set; } = Vector2.Zero;
+	protected bool isWantChaseing = false;
 
 	public virtual void SetKnockbackVelocity(Vector2 velocity)
 	{
@@ -12,6 +13,14 @@ public partial class MoveInterface : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+	}
+	public virtual bool isWantChase()
+	{
+		return isWantChaseing;
+	}
+	public virtual void SetWantChase(bool isChasing)
+	{
+		isWantChaseing = isChasing;
 	}
 	
 	

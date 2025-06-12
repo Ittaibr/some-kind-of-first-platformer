@@ -57,8 +57,9 @@ public partial class JumpState : PlayerState
 		parent.Velocity = velocity;
 
 		parent.MoveAndSlide();
-		TransferChecks();
 		velocity = parent.Velocity;
+		TransferChecks();
+
 
 
 

@@ -414,7 +414,7 @@ height = 14.6667
 
 [node name="player" type="CharacterBody2D" node_paths=PackedStringArray("hitBox")]
 scale = Vector2(1.5, 1.5)
-collision_layer = 16
+collision_layer = 48
 collision_mask = 3
 script = ExtResource("1_b26j0")
 hitBox = NodePath("HitBoxComponent")
@@ -443,7 +443,8 @@ shape = SubResource("CapsuleShape2D_pbfsw")
 [node name="playerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_0hol4")
-animation = &"Idle"
+animation = &"Jump"
+frame_progress = 0.0647234
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 3.33333)

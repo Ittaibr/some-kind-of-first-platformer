@@ -19,9 +19,10 @@ public partial class RoamingState : EnemyState
 		walkSpeed = parent.WalkSpeed;
 	}
 	public override void Enter()
-	{ 
+	{
 		GD.Print("RoamingState entered");
 		GD.Print("patrolComponent direction is " + parent.patrolComponent.direction);
+		animations.Play(animationName);
 	}
 	public override void Exit()
 	{
@@ -30,9 +31,10 @@ public partial class RoamingState : EnemyState
 	public override void PhysicsUpdate(double delta)
 	{
 		direction = parent.patrolComponent.direction;
+		velocity = direction * (float)parent.WalkSpeed;
+		parent.Velocity = velocity;
 		if (direction.X < 0)
 		{
-			velocity.X = -(float)walkSpeed;
 			var vect = hitBox.KnockbackVelocity;
 			vect.X = -1 * Mathf.Abs(hitBox.KnockbackVelocity.X);
 			hitBox.KnockbackVelocity = vect;
@@ -43,12 +45,11 @@ public partial class RoamingState : EnemyState
 			var vect = hitBox.KnockbackVelocity;
 			vect.X = Mathf.Abs(hitBox.KnockbackVelocity.X);
 			hitBox.KnockbackVelocity = vect;
-			velocity.X = (float)walkSpeed;
 			animations.FlipH = true;
 		}
 		else
 		{
-			velocity.X = 0;
+			velocity = Vector2.Zero;
 		}
 		parent.Velocity = velocity;
 	
@@ -64,7 +65,10 @@ public partial class RoamingState : EnemyState
 	}
 	public override void TransferChecksAndOperation()
 	{
-		
+		if (parent.MoveComp.isWantChase())
+		{
+			TransitionTo("Chase");
+		}
 	}
 
 	public override void _Process(double delta)
