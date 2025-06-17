@@ -46,12 +46,13 @@ public partial class IdleState : PlayerState
 		}
 		else if (IsWantDown() || !parent.IsOnFloor())
 		{
+			stateMachine.jumpsLeft -=1;
 			TransitionTo("Fall");
 		}
 		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
 		{
-			GD.Print("idle to dash");
-			TransitionTo("Dash");
+			GD.Print("idle to Roll");
+			TransitionTo("Roll");
 		}
 		if (IsWantSlash())
 		{

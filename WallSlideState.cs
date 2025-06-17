@@ -16,7 +16,15 @@ public partial class WallSlideState : PlayerState
 	}
 	public override void PhysicsUpdate(double delta)
 	{
-		velocity.Y = wallSlideSpeed; // Set the vertical velocity to slide down the wall
+		velocity.Y = wallSlideSpeed;
+		if (animations.FlipH)
+		{
+			velocity.X = -1; // Adjust horizontal velocity based on facing direction
+		}
+		else
+		{
+			velocity.X = 1; // Adjust horizontal velocity based on facing direction
+		}
 		parent.Velocity = velocity; // Update the player's velocity
 		parent.MoveAndSlide(); // Move the player down the wall
 		TransferChecks(); // Check for transitions to other states
@@ -28,6 +36,7 @@ public partial class WallSlideState : PlayerState
 	{
 		GD.Print("Wall slide entered");
 		base.Enter();
+		
 		velocity.Y = 0; // Set the vertical velocity to slide down the wall
 		parent.Velocity = velocity; // Update the player's velocity
 
@@ -63,9 +72,17 @@ public partial class WallSlideState : PlayerState
 		}
 		else if (parent.IsOnFloor())
 		{
-			
+
 			TransitionTo("Idle");
 		}	
+		else if (!parent.IsOnWall())
+		{
+			GD.Print("Wall slide to fall");
+			TransitionTo("Fall");
+		}
+		
+		
+	
 
 	}
 }

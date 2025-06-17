@@ -8,7 +8,7 @@ public partial class FallState : PlayerState
 
 	public override void Enter()
 	{
-		
+
 		GD.Print("fall entered");
 		speed = stateMachine.Speed;
 		runAcc = stateMachine.RunAcc;
@@ -16,7 +16,7 @@ public partial class FallState : PlayerState
 		gravityPush = stateMachine.GravityPush;
 		jumpDecc = stateMachine.JumpDecc;
 
-		velocity = parent.Velocity;	
+		velocity = parent.Velocity;
 
 	}
 	public override void Exit()

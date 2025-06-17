@@ -8,12 +8,12 @@
 [ext_resource type="Script" uid="uid://c2wkl6p1okfxc" path="res://EnemyStateMachine.cs" id="4_epg4t"]
 [ext_resource type="Texture2D" uid="uid://co3q5lg65e6kv" path="res://art/Assets/Characters/Ghost-Files/Spritesheets/ghost-Idle.png" id="4_nnovl"]
 [ext_resource type="Script" uid="uid://cwafsbubt83tn" path="res://Scripts/EnemyScripts/RoamingState.cs" id="4_wujgv"]
-[ext_resource type="Script" uid="uid://bnjfyxmrxh436" path="res://EnemyHitState.cs" id="5_dxifv"]
+[ext_resource type="Script" uid="uid://bnjfyxmrxh436" path="res://Scripts/EnemyScripts/EnemyHitState.cs" id="5_dxifv"]
 [ext_resource type="Texture2D" uid="uid://bufq8hq7g13r5" path="res://art/Assets/Characters/Ghost-Files/Spritesheets/ghost-Shriek.png" id="5_jmwgi"]
 [ext_resource type="PackedScene" uid="uid://co8ycjt0c8n6h" path="res://Components/hurt_box_component.tscn" id="6_3yqyl"]
 [ext_resource type="PackedScene" uid="uid://bwj6dwlpghm5n" path="res://Components/hit_box_component.tscn" id="7_hb8ge"]
 [ext_resource type="PackedScene" uid="uid://bs7go3sq33q67" path="res://Components/health_component.tscn" id="7_wujgv"]
-[ext_resource type="Script" uid="uid://bb8vopwru2fua" path="res://Chase.cs" id="9_nnovl"]
+[ext_resource type="Script" uid="uid://bb8vopwru2fua" path="res://Scripts/EnemyScripts/Chase.cs" id="9_nnovl"]
 [ext_resource type="PackedScene" uid="uid://ctrp2yl28gquh" path="res://character_move_component.tscn" id="10_pwjut"]
 [ext_resource type="PackedScene" uid="uid://d3k012okv0mw3" path="res://simple_chase_component.tscn" id="16_jmwgi"]
 
@@ -262,7 +262,7 @@ IsShuffle = true
 collision = NodePath("../HurtBoxComponent/CollisionShape2D")
 
 [node name="HitBoxComponent" parent="Components" instance=ExtResource("7_hb8ge")]
-collision_layer = 16
+collision_layer = 32
 collision_mask = 0
 KnockbackVelocity = Vector2(50, 0)
 

@@ -3,12 +3,12 @@ using System;
 
 public partial class DashState : PlayerState
 {
-	[Export]private double DashStrength;
-	[Export] private double timeLengthToDash;
-	private double dashTimer =0;
-	[Export]private double totalDashDistance = 100;
-	private double dashDistance = 0;
-	private Vector2 pastPos;
+	[Export]protected double DashStrength;
+	[Export] protected double timeLengthToDash;
+	protected double dashTimer =0;
+	[Export]protected double totalDashDistance = 100;
+	protected double dashDistance = 0;
+	protected Vector2 pastPos;
 
 	// Called when the node enters the scene tree for the first time.
 

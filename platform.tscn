@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://duaxopsqhkpbi" path="res://Scripts/Platform.cs" id="1_s8bxr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s8bxr"]
-size = Vector2(32, 10)
+size = Vector2(27.9993, 0.191774)
 
 [sub_resource type="Animation" id="Animation_c1gtx"]
 length = 0.001
@@ -49,7 +49,6 @@ _data = {
 script = ExtResource("1_s8bxr")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
-position = Vector2(139, -1)
 rotation = -0.00684921
 rotates = false
 
@@ -57,7 +56,6 @@ rotates = false
 remote_path = NodePath("../../AnimatableBody2D")
 
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="."]
-position = Vector2(139, -1)
 rotation = -0.00684921
 scale = Vector2(1, 1)
 collision_layer = 3
@@ -68,6 +66,7 @@ region_enabled = true
 region_rect = Rect2(16, 0, 32, 9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D"]
+position = Vector2(0.0273895, -3.99991)
 shape = SubResource("RectangleShape2D_s8bxr")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

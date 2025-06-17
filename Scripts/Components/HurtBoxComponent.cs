@@ -23,6 +23,18 @@ public partial class HurtBoxComponent : Area2D
 		}
 	}
 
+	public void SetDisabled(bool disabled)
+	{
+		if (disabled)
+		{
+			AreaEntered -= OnAreaEnterd;
+		}
+		else
+		{
+			AreaEntered += OnAreaEnterd;
+		}
+	}
+
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{

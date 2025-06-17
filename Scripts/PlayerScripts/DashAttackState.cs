@@ -1,0 +1,39 @@
+using Godot;
+using System;
+
+public partial class DashAttackState : SimpleAttackState
+{
+	// Called when the node enters the scene tree for the first time.
+	public override void Enter()
+	{
+		base.Enter();
+		animations.Play(animationName);
+		GD.Print("dash attack entered");
+		animations.AnimationFinished += OnAnimationStop; 
+		//parent.hurtBox.SetCollisionMaskValue(6, false); // Disable hurtbox collision
+	}
+	public override void Exit()
+	{
+		base.Exit();
+		//parent.hurtBox.SetCollisionMaskValue(6, true); // Re-enable hurtbox collision
+	}
+	public override void PhysicsUpdate(double delta)
+	{
+		base.PhysicsUpdate(delta);
+		
+		
+		
+	}
+
+	protected override void TransferChecks()
+	{
+		if (isFinished) { TransitionTo("Run"); }
+
+		
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+	}
+}

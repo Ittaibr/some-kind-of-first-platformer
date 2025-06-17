@@ -65,17 +65,23 @@ public partial class RunState : PlayerState
 		{
 			stateMachine.TransitionTo("Jump");
 		}
-		else if (IsWantDown() || !parent.IsOnFloor())
+		else if (IsWantDown() && !parent.IsOnFloor())
 		{
+			stateMachine.jumpsLeft -=1;
 			TransitionTo("Fall");
 		}
 		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
 		{
-			TransitionTo("Dash");
+			TransitionTo("Roll");
 		}
 		else if (IsWantSlash())
 		{
 			TransitionTo("SimpleAttack");
+		}
+		else if (!parent.IsOnFloor())
+		{
+			stateMachine.jumpsLeft -=1;
+			TransitionTo("CoyoteBuffer");
 		}
 	}
 }

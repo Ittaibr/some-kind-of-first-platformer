@@ -5,6 +5,7 @@ public partial class SimpleAttackState : PlayerState
 {
 	[Export] private int frameHit = 5;
 	[Export] private NodePath collisionPath;
+	[Export] private HitBoxComponent hitBox;
 	private CollisionShape2D collision;
 	protected bool isFinished = false;
 	private bool isWantSlash = false;
@@ -23,13 +24,13 @@ public partial class SimpleAttackState : PlayerState
 		if (animations.FlipH)
 		{
 			vec.X = -Mathf.Abs(vec.X);
-			parent.hitBox.KnockbackVelocity = new Vector2(-Mathf.Abs(parent.hitBox.KnockbackVelocity.X), parent.hitBox.KnockbackVelocity.Y);
+			hitBox.KnockbackVelocity = new Vector2(-Mathf.Abs(hitBox.KnockbackVelocity.X), hitBox.KnockbackVelocity.Y);
 
 		}
 		else
 		{
 			vec.X = Mathf.Abs(vec.X);
-			parent.hitBox.KnockbackVelocity = new Vector2(Mathf.Abs(parent.hitBox.KnockbackVelocity.X), parent.hitBox.KnockbackVelocity.Y);
+			hitBox.KnockbackVelocity = new Vector2(Mathf.Abs(hitBox.KnockbackVelocity.X), hitBox.KnockbackVelocity.Y);
 		}
 		collision.Position = vec;
 
@@ -76,7 +77,7 @@ public partial class SimpleAttackState : PlayerState
 	}
 
 
-	private void OnAnimationStop()
+	protected void OnAnimationStop()
 	{
 		isFinished = true;
 	}
