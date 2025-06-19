@@ -588,7 +588,7 @@ position_smoothing_enabled = true
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("6_606se")
 intialState = NodePath("Fall")
-Speed = 130.0
+Speed = 150.0
 GravityPush = 1.43
 DashCoolDown = 0.7
 
@@ -619,7 +619,7 @@ animationName = "Roll"
 
 [node name="Dash" type="Node" parent="StateMachine"]
 script = ExtResource("9_nvl01")
-DashStrength = 300.0
+DashStrength = 400.0
 timeLengthToDash = 0.3
 totalDashDistance = 800.0
 animationName = "Dash"

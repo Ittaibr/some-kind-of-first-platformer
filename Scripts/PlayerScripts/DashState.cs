@@ -66,7 +66,13 @@ public partial class DashState : PlayerState
 			{
 				GD.Print("dashTimerRunout");
 			}
-			if (!parent.IsOnFloor())
+			if (!parent.IsOnFloor() && parent.IsOnWall())
+			{
+				TransitionTo("WallSlide");
+				GD.Print("dash to wall slide");
+				return;
+			}
+			else if (!parent.IsOnFloor())
 			{
 				GD.Print("dashToFall");
 				GD.Print("dash has in exit to fall " + stateMachine.jumpsLeft + "jumps left");

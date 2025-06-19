@@ -50,7 +50,7 @@ public partial class SimpleAttackState : PlayerState
 		{
 			isWantSlash = IsWantSlash();
 		}
-
+		parent.MoveAndSlide();
 		TransferChecks();
 	}
 	protected override void TransferChecks()

@@ -70,11 +70,16 @@ public partial class WallSlideState : PlayerState
 		{
 			TransitionTo("Fall");
 		}
+		else if (IsWantDash())
+		{
+			parent.animations.FlipH = !animations.FlipH; // Maintain the current facing direction during dash
+			TransitionTo("Dash");
+		}
 		else if (parent.IsOnFloor())
 		{
 
 			TransitionTo("Idle");
-		}	
+		}
 		else if (!parent.IsOnWall())
 		{
 			GD.Print("Wall slide to fall");
