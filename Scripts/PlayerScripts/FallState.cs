@@ -3,7 +3,8 @@ using System;
 
 public partial class FallState : PlayerState
 {
-	[Export(PropertyHint.Range,"1,2")] double downExtraPush = 10;
+	[Export(PropertyHint.Range, "1,2")] double downExtraPush = 10;
+	[Export] float maxFallSpeed = 1000f;
 	// Called when the node enters the scene tree for the first time.
 
 	public override void Enter()
@@ -26,7 +27,7 @@ public partial class FallState : PlayerState
 	}
 	public override void Update(double delta)
 	{
-	
+
 	}
 
 	public override void PhysicsUpdate(double delta)
@@ -35,7 +36,7 @@ public partial class FallState : PlayerState
 
 		velocity = parent.Velocity;
 		float gravity = (float)(parent.GetGravity().Y * gravityPush);
-		if (IsWantDown())
+		if (Input.IsActionPressed("move_down"))
 		{
 			gravity = (float)(downExtraPush * parent.GetGravity().Y * gravityPush);
 			parent.SetCollisionMaskValue(2, false);
@@ -64,6 +65,12 @@ public partial class FallState : PlayerState
 		{
 			animations.Play(animationName);
 		}
+
+		if (velocity.Y > maxFallSpeed)
+		{
+			velocity.Y = maxFallSpeed;
+		}
+		parent.Velocity = velocity;
 		TransferChecks();
 
 	}
@@ -72,7 +79,7 @@ public partial class FallState : PlayerState
 	{
 		if (parent.IsOnFloor())
 		{
-			GD.Print("fall on floor"); 
+			GD.Print("fall on floor");
 		}
 		if (parent.IsOnFloor() && GetMovmentDirection() != 0)
 		{
@@ -84,7 +91,7 @@ public partial class FallState : PlayerState
 			GD.Print("fall to idle");
 			TransitionTo("Idle");
 		}
-		else if(!parent.IsOnFloor() && parent.IsOnWall())
+		else if (!parent.IsOnFloor() && parent.IsOnWall())
 		{
 			GD.Print("fall to wall slide");
 			TransitionTo("WallSlide");
@@ -94,11 +101,10 @@ public partial class FallState : PlayerState
 			GD.Print("fall to run on floor");
 			TransitionTo("Run");
 		}
-		else if (IsWantDown() && !parent.IsOnFloor())
+		else if (IsWantDownAttack() && !parent.IsOnFloor() && parent.DownAttacksLeft > 0)
 		{
-			GD.Print("fall has in transition to fall down");
-			TransitionTo("FallDown");
-		}
+			TransitionTo("DownAttack");		}
+
 		else if (IsWantJump() && stateMachine.jumpsLeft > 0)
 		{
 			GD.Print("fall has in transition to jump" + stateMachine.jumpsLeft + "jumps left");
@@ -110,11 +116,13 @@ public partial class FallState : PlayerState
 			GD.Print("fall to dash");
 			TransitionTo("Dash");
 		}
-    }
-	 protected override bool IsWantJump()
-    {
+	}
+	protected override bool IsWantJump()
+	{
 		return Input.IsActionJustPressed("jump");
-    }
+	}
+	
+
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

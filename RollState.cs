@@ -68,7 +68,7 @@ public partial class RollState : DashState
 			}
 		if (transitionto == transitionTo.Jump)
 		{
-			TransitionTo("Jump");
+			TransitionTo("SlideJump");
 
 			return;
 		}

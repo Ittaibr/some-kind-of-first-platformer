@@ -1,31 +1,17 @@
 using Godot;
 using System;
 
-public partial class JumpState : PlayerState
+public partial class SlideJumpState : JumpState
 {
-	[Export] float jumpForce = 400;
+	[Export] float slideHorizontalForce = 200;
+	[Export] double slideGravityDec = 0.5;
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
 
-	}
 	public override void Enter()
 	{
-		GD.Print("jump entered");
-
+		//stateMachine.jumpsLeft += 1;
 		base.Enter();
-		stateMachine.jumpsLeft -= 1;
-		GD.Print("jump has " +stateMachine.jumpsLeft + " jumps left");
-		animations.Play(animationName);
-
-
-		velocity.Y = -jumpForce;
-
-    }
-	public override void Update(double delta)
-	{
-		
+		velocity.X = slideHorizontalForce * (animations.FlipH ? -1 : 1);
 	}
 
 	public override void PhysicsUpdate(double delta)
@@ -35,12 +21,7 @@ public partial class JumpState : PlayerState
 		stateMachine.DashCoolDownTimer -= delta;
 
 		float gravity = parent.GetGravity().Y;
-		velocity.Y += (float)(delta * gravity);
-
-		if (velocity.Y < 0 && Input.IsActionJustReleased("jump"))
-		{
-			velocity.Y *= (float)jumpDecc;
-		}
+		velocity.Y += (float)(delta * gravity * slideGravityDec);
 
 
 		var movment = GetMovmentDirection() * speed;
@@ -48,10 +29,10 @@ public partial class JumpState : PlayerState
 		{
 
 			animations.FlipH = movment < 0;
-			velocity.X = (float)Mathf.MoveToward(velocity.X, movment, speed * runAcc);
+			//velocity.X = (float)Mathf.MoveToward(velocity.X, movment, speed * runAcc);
 
 		}
-		else { velocity.X = Mathf.MoveToward(velocity.X, 0, (float)runDecc * speed); }
+		//else { velocity.X = Mathf.MoveToward(velocity.X, 0, (float)runDecc * speed); }
 
 
 		parent.Velocity = velocity;
@@ -64,12 +45,6 @@ public partial class JumpState : PlayerState
 
 
 	}
-    protected override bool IsWantJump()
-    {
-		return Input.IsActionJustPressed("jump");
-    }
-
-
 	protected override void TransferChecks()
 	{
 		var movment = GetMovmentDirection() * speed;
@@ -81,25 +56,24 @@ public partial class JumpState : PlayerState
 		{
 			TransitionTo("DoubleJump");
 		}
-		/*else if (IsWantDown() && !parent.IsOnFloor())
-		{
-			TransitionTo("DownAttack");
-		}*/
 		else if (velocity.X == 0 && parent.IsOnFloor() && movment == 0)
 		{
 			TransitionTo("Idle");
 		}
-		else if (velocity.Y >= 0)
-		{
-			TransitionTo("Fall");
-		}
+
 		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
 		{
 			TransitionTo("Dash");
 		}
-
+		else if (IsWantDownAttack() && !parent.IsOnFloor() && parent.DownAttacksLeft > 0)
+		{
+			TransitionTo("DownAttack");
+		}
+		
 	}
-
+	public override void _Ready()
+	{
+	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)

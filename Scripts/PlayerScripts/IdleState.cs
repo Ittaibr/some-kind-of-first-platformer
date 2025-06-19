@@ -18,6 +18,7 @@ public partial class IdleState : PlayerState
 	public override void Enter()
 	{
 		base.Enter();
+		parent.DownAttacksLeft = parent.totaDdownAttacks;
 		velocity.X = 0;
 		stateMachine.jumpsLeft = stateMachine.jumpsInAir;
 		animations.Frame = 0;

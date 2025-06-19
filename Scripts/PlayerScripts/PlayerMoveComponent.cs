@@ -21,6 +21,10 @@ public partial class PlayerMoveComponent : MoveInterface
 		}
 		return 0;
 	}
+	public virtual bool IsWantDownAttack()
+	{
+		return Input.IsActionJustPressed("DownAttack");
+	}
 	public void SetKnockbackVelocity(double velocity)
 	{
 		knockbackVelocity = new Vector2((float)velocity, 0);

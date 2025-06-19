@@ -13,6 +13,7 @@ public partial class RunState : PlayerState
 		GD.Print("run entered");
 
 		base.Enter();
+		parent.DownAttacksLeft = parent.totaDdownAttacks;
 		stateMachine.jumpsLeft = stateMachine.jumpsInAir;
 
 	}

@@ -8,6 +8,8 @@ public partial class Player : CharacterBody2D
 	public PlayerMoveComponent moveComponent;
 	[Export] public HitBoxComponent hitBox;
 	[Export] public HurtBoxComponent hurtBox;
+	[Export] public int totaDdownAttacks = 1;
+	public int DownAttacksLeft { get; set; } = 0;
 
 
 	// Called when the node enters the scene tree for the first time.

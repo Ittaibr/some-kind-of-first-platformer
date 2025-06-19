@@ -58,6 +58,10 @@ public partial class PlayerState : Node
 		return MoveComp.IsWantSlash();
 	}
 
+	protected virtual bool IsWantDownAttack()
+	{
+		return MoveComp.IsWantDownAttack();
+	}
 	protected virtual bool IsWantDash()
 	{
 		return MoveComp.IsWantDash();

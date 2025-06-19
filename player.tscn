@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=3 uid="uid://udflyx6jsf2a"]
+[gd_scene load_steps=96 format=3 uid="uid://udflyx6jsf2a"]
 
 [ext_resource type="Script" uid="uid://b5eyv3116ao5y" path="res://Scripts/PlayerScripts/Player.cs" id="1_b26j0"]
 [ext_resource type="Texture2D" uid="uid://gasahsauq5u4" path="res://art/Warrior/SpriteSheet/Warrior_Sheet-Effect.png" id="2_nvl01"]
@@ -31,6 +31,8 @@
 [ext_resource type="Script" uid="uid://df550386ys3uc" path="res://Scripts/PlayerScripts/DashAttackState.cs" id="27_khis8"]
 [ext_resource type="Script" uid="uid://ck35wpdbbng61" path="res://RollBufferState.cs" id="28_b88wv"]
 [ext_resource type="Script" uid="uid://bghcob34ggp1p" path="res://Scripts/PlayerScripts/CoyoteBufferState.cs" id="29_634y6"]
+[ext_resource type="Script" uid="uid://cm8n6jpsqmprv" path="res://SlideJumpState.cs" id="30_efrwb"]
+[ext_resource type="Script" uid="uid://3gwfin8hg7rl" path="res://DownAttackState.cs" id="31_hiqhm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bwjto"]
 size = Vector2(10.3333, 18.5)
@@ -86,6 +88,26 @@ region = Rect2(0, 176, 55, 44)
 [sub_resource type="AtlasTexture" id="AtlasTexture_qtqh7"]
 atlas = ExtResource("2_nvl01")
 region = Rect2(69, 176, 55, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kh4g0"]
+atlas = ExtResource("3_606se")
+region = Rect2(210, 440, 50, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mgmjd"]
+atlas = ExtResource("3_606se")
+region = Rect2(280, 440, 50, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_va2xi"]
+atlas = ExtResource("3_606se")
+region = Rect2(350, 440, 50, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fkf2u"]
+atlas = ExtResource("3_606se")
+region = Rect2(0, 484, 50, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s7jk6"]
+atlas = ExtResource("3_606se")
+region = Rect2(70, 484, 50, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2wuci"]
 atlas = ExtResource("2_nvl01")
@@ -294,6 +316,26 @@ animations = [{
 "loop": false,
 "name": &"AttackContinue",
 "speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kh4g0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgmjd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_va2xi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fkf2u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s7jk6")
+}],
+"loop": true,
+"name": &"Crouch",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -526,7 +568,7 @@ shape = SubResource("CapsuleShape2D_pbfsw")
 [node name="playerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_0hol4")
-animation = &"Fall"
+animation = &"Crouch"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 3.33333)
@@ -539,8 +581,7 @@ stream = ExtResource("4_hqtel")
 stream = ExtResource("5_sweqy")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(3.3, 3.3)
-limit_bottom = 400
+zoom = Vector2(1.5, 1.5)
 limit_smoothed = true
 position_smoothing_enabled = true
 
@@ -550,7 +591,6 @@ intialState = NodePath("Fall")
 Speed = 130.0
 GravityPush = 1.43
 DashCoolDown = 0.7
-jumpsInAir = 1
 
 [node name="SimpleAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitBox")]
 script = ExtResource("12_urp6f")
@@ -581,12 +621,13 @@ animationName = "Roll"
 script = ExtResource("9_nvl01")
 DashStrength = 300.0
 timeLengthToDash = 0.3
-totalDashDistance = 450.0
+totalDashDistance = 800.0
 animationName = "Dash"
 
 [node name="Fall" type="Node" parent="StateMachine"]
 script = ExtResource("9_b26j0")
 downExtraPush = 1.17
+maxFallSpeed = 700.0
 animationName = "Fall"
 
 [node name="DoubleJump" type="Node" parent="StateMachine"]
@@ -628,6 +669,17 @@ script = ExtResource("29_634y6")
 bufferTime = 0.18
 downExtraPush = 1.142
 animationName = "Fall"
+
+[node name="SlideJump" type="Node" parent="StateMachine"]
+script = ExtResource("30_efrwb")
+slideHorizontalForce = 300.0
+jumpForce = 220.0
+animationName = "Jump"
+
+[node name="DownAttack" type="Node" parent="StateMachine"]
+script = ExtResource("31_hiqhm")
+downAttackForce = 500.0
+animationName = "Crouch"
 
 [node name="PlayerMoveComp" type="Node" parent="."]
 script = ExtResource("11_ivps1")
