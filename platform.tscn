@@ -1,10 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://dj2dwcyh8neok"]
+[gd_scene load_steps=8 format=3 uid="uid://dj2dwcyh8neok"]
 
 [ext_resource type="Texture2D" uid="uid://ccwf2t5li6182" path="res://art/brackeys_platformer_assets/sprites/platforms.png" id="1_mi635"]
 [ext_resource type="Script" uid="uid://duaxopsqhkpbi" path="res://Scripts/Platform.cs" id="1_s8bxr"]
 
+[sub_resource type="Curve2D" id="Curve2D_s8bxr"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, -0.4, 0, 0, 0, 0, 82, 0.4)
+}
+point_count = 2
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s8bxr"]
-size = Vector2(27.9993, 0.191774)
+size = Vector2(34.8019, 8.9407e-07)
 
 [sub_resource type="Animation" id="Animation_c1gtx"]
 length = 0.001
@@ -46,9 +52,14 @@ _data = {
 }
 
 [node name="movingPlatform" type="Path2D"]
+scale = Vector2(2.5, 2.5)
+curve = SubResource("Curve2D_s8bxr")
 script = ExtResource("1_s8bxr")
+speed = 2.8
+speedScale = 2.5
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
+position = Vector2(0, -0.4)
 rotation = -0.00684921
 rotates = false
 
@@ -56,7 +67,9 @@ rotates = false
 remote_path = NodePath("../../AnimatableBody2D")
 
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="."]
+position = Vector2(0, -0.4)
 rotation = -0.00684921
+scale = Vector2(1, 1)
 collision_layer = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="AnimatableBody2D"]
@@ -65,7 +78,7 @@ region_enabled = true
 region_rect = Rect2(16, 0, 32, 9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D"]
-position = Vector2(0.0273895, -3.99991)
+position = Vector2(-0.171229, -4.12045)
 shape = SubResource("RectangleShape2D_s8bxr")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -59,6 +59,10 @@ public partial class DashState : PlayerState
 
 	protected override void TransferChecks()
 	{
+		if (IsWantDownAttack() && !parent.IsOnFloor() && parent.DownAttacksLeft > 0)
+		{
+			TransitionTo("DownAttack");
+		}
 		if (dashTimer <= 0 || dashDistance >= totalDashDistance)
 		{
 			GD.Print("ExitingDash");
@@ -71,6 +75,10 @@ public partial class DashState : PlayerState
 				TransitionTo("WallSlide");
 				GD.Print("dash to wall slide");
 				return;
+			}
+			else if (IsWantDownAttack() && !parent.IsOnFloor() && parent.DownAttacksLeft > 0)
+			{
+				TransitionTo("DownAttack");
 			}
 			else if (!parent.IsOnFloor())
 			{

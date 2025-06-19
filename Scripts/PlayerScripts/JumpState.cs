@@ -81,6 +81,10 @@ public partial class JumpState : PlayerState
 		{
 			TransitionTo("DoubleJump");
 		}
+		else if (IsWantDownAttack() && !parent.IsOnFloor() && parent.DownAttacksLeft > 0)
+		{
+			TransitionTo("DownAttack");
+		}
 		/*else if (IsWantDown() && !parent.IsOnFloor())
 		{
 			TransitionTo("DownAttack");

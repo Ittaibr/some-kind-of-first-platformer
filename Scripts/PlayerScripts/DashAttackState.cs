@@ -3,6 +3,7 @@ using System;
 
 public partial class DashAttackState : SimpleAttackState
 {
+	[Export] protected float horizontalSlideSpeed = 60;
 	// Called when the node enters the scene tree for the first time.
 	public override void Enter()
 	{
@@ -23,9 +24,16 @@ public partial class DashAttackState : SimpleAttackState
 	public override void PhysicsUpdate(double delta)
 	{
 		base.PhysicsUpdate(delta);
-		
-		
-		
+		if (animations.FlipH)
+		{
+			velocity.X = -horizontalSlideSpeed;
+		}
+		else
+		{
+			velocity.X = horizontalSlideSpeed;
+		}
+		parent.Velocity = velocity;
+		parent.MoveAndSlide();
 	}
 
 	protected override void TransferChecks()
