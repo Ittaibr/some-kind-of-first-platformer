@@ -9,7 +9,10 @@ public partial class DashAttackState : SimpleAttackState
 		base.Enter();
 		animations.Play(animationName);
 		GD.Print("dash attack entered");
-		animations.AnimationFinished += OnAnimationStop; 
+		if (!animations.IsConnected("animation_finished", new Callable(this, nameof(OnAnimationStop))))
+		{
+			animations.Connect("animation_finished", new Callable(this, nameof(OnAnimationStop)));
+		}
 		//parent.hurtBox.SetCollisionMaskValue(6, false); // Disable hurtbox collision
 	}
 	public override void Exit()

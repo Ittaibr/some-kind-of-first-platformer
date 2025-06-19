@@ -44,7 +44,7 @@ public partial class PlayerMoveComponent : MoveInterface
 	
 	public override bool IsWantDash()
 	{
-		return Input.IsActionPressed("Dash");
+		return Input.IsActionJustPressed("Dash");
 	}
 
 

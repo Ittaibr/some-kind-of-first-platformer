@@ -28,7 +28,6 @@ public partial class RollState : DashState
 			animations.Frame = 2;
 			animations.Play();
 		}
-		base.PhysicsUpdate(delta);
 
 
 		if (!parent.IsOnFloor())
@@ -46,7 +45,7 @@ public partial class RollState : DashState
 			{
 				transitionto = transitionTo.Jump;
 			}
-			else if (IsWantDown() || !parent.IsOnFloor())
+			else if (IsWantDown())
 			{
 				transitionto = transitionTo.Fall;
 			}
@@ -54,6 +53,8 @@ public partial class RollState : DashState
 			{
 				transitionto = transitionTo.Run;
 			}
+			base.PhysicsUpdate(delta);
+
 			//else if () transitionto = transitionTo.Idle;
 		
 		
@@ -61,18 +62,23 @@ public partial class RollState : DashState
 
 	protected override void TransferChecks()
 	{
+		
 		if (transitionto == transitionTo.DashAttack)
-			{
-				TransitionTo("DashAttack");
-				return;
-			}
+		{
+			TransitionTo("DashAttack");
+			return;
+		}
 		if (transitionto == transitionTo.Jump)
 		{
 			TransitionTo("SlideJump");
 
 			return;
 		}
-		
+		if (transitionto != transitionTo.Fall && !parent.IsOnFloor())
+		{
+			TransitionTo("SlideCoyote");
+			return;
+		}
 		if (dashTimer <= 0 || dashDistance >= totalDashDistance || !parent.IsOnFloor())
 		{
 			if (!parent.IsOnFloor())
@@ -95,11 +101,12 @@ public partial class RollState : DashState
 					parent.Velocity = velocity;
 					break;
 				case transitionTo.Fall:
-					stateMachine.jumpsLeft -=1;
+					stateMachine.jumpsLeft -= 1;
 					TransitionTo("CoyoteBuffer");
 					break;
 
 			}
+			
 
 
 		}

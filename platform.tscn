@@ -57,7 +57,6 @@ remote_path = NodePath("../../AnimatableBody2D")
 
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="."]
 rotation = -0.00684921
-scale = Vector2(1, 1)
 collision_layer = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="AnimatableBody2D"]

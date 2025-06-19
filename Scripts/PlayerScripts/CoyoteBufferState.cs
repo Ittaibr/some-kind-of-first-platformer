@@ -3,8 +3,8 @@ using System;
 
 public partial class CoyoteBufferState : FallState
 {
-	[Export] private double bufferTime = 0.2; // Time in seconds to buffer the roll
-	private double bufferTimer = 0.0;
+	[Export] protected double bufferTime = 0.2; // Time in seconds to buffer the roll
+	protected double bufferTimer = 0.0;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void Enter()

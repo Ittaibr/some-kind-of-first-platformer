@@ -29,10 +29,10 @@
 [ext_resource type="Script" uid="uid://b5t15kh4emks8" path="res://HitState.cs" id="17_pylmc"]
 [ext_resource type="Script" uid="uid://b7ipylxiqcy8m" path="res://WallSlideState.cs" id="18_pbfsw"]
 [ext_resource type="Script" uid="uid://df550386ys3uc" path="res://Scripts/PlayerScripts/DashAttackState.cs" id="27_khis8"]
-[ext_resource type="Script" uid="uid://ck35wpdbbng61" path="res://RollBufferState.cs" id="28_b88wv"]
 [ext_resource type="Script" uid="uid://bghcob34ggp1p" path="res://Scripts/PlayerScripts/CoyoteBufferState.cs" id="29_634y6"]
 [ext_resource type="Script" uid="uid://cm8n6jpsqmprv" path="res://SlideJumpState.cs" id="30_efrwb"]
 [ext_resource type="Script" uid="uid://3gwfin8hg7rl" path="res://DownAttackState.cs" id="31_hiqhm"]
+[ext_resource type="Script" uid="uid://rr23nuoms327" path="res://SlideCoyoteState.cs" id="31_tkwlq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bwjto"]
 size = Vector2(10.3333, 18.5)
@@ -660,14 +660,11 @@ collisionPath = NodePath("../../DashAttackHitBox/CollisionShape2D")
 hitBox = NodePath("../../DashAttackHitBox")
 animationName = "DashAttack"
 
-[node name="RollBuffer" type="Node" parent="StateMachine"]
-script = ExtResource("28_b88wv")
-bufferTime = 1.0
-
 [node name="CoyoteBuffer" type="Node" parent="StateMachine"]
 script = ExtResource("29_634y6")
 bufferTime = 0.18
 downExtraPush = 1.142
+maxFallSpeed = 700.0
 animationName = "Fall"
 
 [node name="SlideJump" type="Node" parent="StateMachine"]
@@ -680,6 +677,11 @@ animationName = "Jump"
 script = ExtResource("31_hiqhm")
 downAttackForce = 500.0
 animationName = "Crouch"
+
+[node name="SlideCoyote" type="Node" parent="StateMachine"]
+script = ExtResource("31_tkwlq")
+bufferTime = 0.18
+downExtraPush = 1.142
 
 [node name="PlayerMoveComp" type="Node" parent="."]
 script = ExtResource("11_ivps1")

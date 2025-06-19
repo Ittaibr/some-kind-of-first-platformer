@@ -5,6 +5,7 @@ public partial class WallSlideState : PlayerState
 {
 	[Export] private float wallSlideSpeed = 100f; // Speed at which the player slides down the wall
 	[Export] private float jumpXvelocity = 200f; // Horizontal velocity when jumping off the wall
+	[Export] private double wallDownSlideMult = 2.4;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -24,6 +25,11 @@ public partial class WallSlideState : PlayerState
 		else
 		{
 			velocity.X = 1; // Adjust horizontal velocity based on facing direction
+		}
+
+		if (IsWantDown())
+		{
+			velocity.Y = (float) (wallSlideSpeed * wallDownSlideMult);
 		}
 		parent.Velocity = velocity; // Update the player's velocity
 		parent.MoveAndSlide(); // Move the player down the wall
@@ -66,10 +72,10 @@ public partial class WallSlideState : PlayerState
 			parent.Velocity = velocity; // Update the player's velocity
 			TransitionTo("Jump");
 		}
-		else if (IsWantDown())
+		/*else if (IsWantDown())
 		{
 			TransitionTo("Fall");
-		}
+		}*/
 		else if (IsWantDash())
 		{
 			parent.animations.FlipH = !animations.FlipH; // Maintain the current facing direction during dash

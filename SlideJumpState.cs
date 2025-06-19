@@ -47,15 +47,20 @@ public partial class SlideJumpState : JumpState
 	}
 	protected override void TransferChecks()
 	{
+		if (parent.IsOnWall() && !parent.IsOnFloor())
+		{
+			TransitionTo("WallSlide");
+			return;
+		}
 		var movment = GetMovmentDirection() * speed;
 		if (parent.IsOnFloor() && velocity.Y >= 0)
 		{
 			stateMachine.TransitionTo("Run");
 		}
-		else if (IsWantJump() && stateMachine.jumpsLeft > 0)
+		/*else if (IsWantJump() && stateMachine.jumpsLeft > 0)
 		{
 			TransitionTo("DoubleJump");
-		}
+		}*/
 		else if (velocity.X == 0 && parent.IsOnFloor() && movment == 0)
 		{
 			TransitionTo("Idle");

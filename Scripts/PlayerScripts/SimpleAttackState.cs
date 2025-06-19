@@ -50,6 +50,10 @@ public partial class SimpleAttackState : PlayerState
 		{
 			isWantSlash = IsWantSlash();
 		}
+		velocity = parent.Velocity;
+		velocity.X = (float)Mathf.MoveToward(velocity.X, 0, (float)runDecc * speed);
+		//velocity.Y = 0; // Prevent falling during attack]
+		parent.Velocity = velocity;
 		parent.MoveAndSlide();
 		TransferChecks();
 	}
