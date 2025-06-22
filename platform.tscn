@@ -1,16 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://dj2dwcyh8neok"]
+[gd_scene load_steps=9 format=3 uid="uid://dj2dwcyh8neok"]
 
 [ext_resource type="Texture2D" uid="uid://ccwf2t5li6182" path="res://art/brackeys_platformer_assets/sprites/platforms.png" id="1_mi635"]
 [ext_resource type="Script" uid="uid://duaxopsqhkpbi" path="res://Scripts/Platform.cs" id="1_s8bxr"]
-
-[sub_resource type="Curve2D" id="Curve2D_s8bxr"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, -0.4, 0, 0, 0, 0, 82, 0.4)
-}
-point_count = 2
+[ext_resource type="PackedScene" uid="uid://co8ycjt0c8n6h" path="res://Components/hurt_box_component.tscn" id="3_c1gtx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s8bxr"]
-size = Vector2(34.8019, 8.9407e-07)
+size = Vector2(34.9069, 8.52948)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c1gtx"]
+size = Vector2(38.6667, 14.6667)
 
 [sub_resource type="Animation" id="Animation_c1gtx"]
 length = 0.001
@@ -52,14 +50,13 @@ _data = {
 }
 
 [node name="movingPlatform" type="Path2D"]
-scale = Vector2(2.5, 2.5)
-curve = SubResource("Curve2D_s8bxr")
+scale = Vector2(1.5, 1.5)
 script = ExtResource("1_s8bxr")
 speed = 2.8
-speedScale = 2.5
+isOneWayCollision = false
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
-position = Vector2(0, -0.4)
+position = Vector2(0, 0.666667)
 rotation = -0.00684921
 rotates = false
 
@@ -67,7 +64,7 @@ rotates = false
 remote_path = NodePath("../../AnimatableBody2D")
 
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="."]
-position = Vector2(0, -0.4)
+position = Vector2(0, 0.666667)
 rotation = -0.00684921
 scale = Vector2(1, 1)
 collision_layer = 3
@@ -78,8 +75,20 @@ region_enabled = true
 region_rect = Rect2(16, 0, 32, 9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D"]
-position = Vector2(-0.171229, -4.12045)
+position = Vector2(-0.118707, 0.14429)
+scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_s8bxr")
+one_way_collision_margin = 32.1
+
+[node name="HurtBoxComponent" parent="AnimatableBody2D" instance=ExtResource("3_c1gtx")]
+position = Vector2(-0.99541, -0.6735)
+rotation = 0.00684921
+scale = Vector2(1, 1)
+knockbackVelocity = Vector2(0, 800)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D/HurtBoxComponent"]
+position = Vector2(1, -0.666668)
+shape = SubResource("RectangleShape2D_c1gtx")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 callback_mode_process = 0

@@ -6,11 +6,11 @@ public partial class Platform : Path2D
 	[Export]
 	private bool isLooping = true;
 	[Export]
-	private double speed = 2.0;
+	private float speed = 2.0f;
 	[Export]
 	private bool isOneWayCollision = true;
 	[Export]
-	private double speedScale = 1.0;
+	private float speedScale = 1.0f;
 	[Export]
 	private uint setCollisionLayer = 2;
 	[Export]
@@ -27,23 +27,37 @@ public partial class Platform : Path2D
 		collsion.OneWayCollision = isOneWayCollision;
 		GetNode<AnimatableBody2D>("AnimatableBody2D").CollisionLayer = setCollisionLayer;
 		path.Rotates = isRotating;
+
+		if (Curve == null)
+		{
+			GD.PrintErr("PathFollow2D has no curve assigned. Please assign a curve to the PathFollow2D node.");
+			SetProcess(false);
+			return;
+		}
 		if (isLooping)
 		{
 			animation.Play("move");
 			animation.SpeedScale = (float)speedScale;
 			SetProcess(false);
 		}
+		path.Progress = 0.0f;
 	}
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+
+		path.Progress += (float)delta * speedScale;
+		animation.Play("move");
+		animation.SpeedScale = speedScale;
+
+
 	}
 
-    public override void _PhysicsProcess(double delta)
-    {
-		path.Progress += (float)(delta * speed);
+	public override void _PhysicsProcess(double delta)
+	{
+		
     }
 
 

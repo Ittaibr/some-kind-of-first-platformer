@@ -4,7 +4,11 @@ using System;
 public partial class RoamingState : EnemyState
 {
 	protected double walkSpeed = 100;
-	[Export]private double totalWalkDistance = 100;
+	[Export] private float turnSpeed = 10;
+	[Export] Vector2 Acceleration = new Vector2(100, 100);
+	[Export] Vector2 Deceleration = new Vector2(100, 100);
+
+	[Export] private double totalWalkDistance = 100;
 	private double walkDistance = 0;
 	[Export] private double timeLengthToWalk;
 	[Export] private HitBoxComponent hitBox;
@@ -32,7 +36,6 @@ public partial class RoamingState : EnemyState
 	{
 		direction = parent.patrolComponent.direction;
 		velocity = direction * (float)parent.WalkSpeed;
-		parent.Velocity = velocity;
 		if (direction.X < 0)
 		{
 			var vect = hitBox.KnockbackVelocity;
@@ -51,7 +54,7 @@ public partial class RoamingState : EnemyState
 		{
 			velocity = Vector2.Zero;
 		}
-		parent.Velocity = velocity;
+		parent.Velocity = parent.VelocityCalc.GetRunVelocity(velocity, delta, turnSpeed, Acceleration, Deceleration);
 	
 
 	}

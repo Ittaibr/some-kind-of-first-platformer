@@ -3,8 +3,11 @@ using System;
 
 public partial class FallState : PlayerState
 {
-	[Export(PropertyHint.Range, "1,2")] double downExtraPush = 10;
+	[Export] double downExtraPush = 10;
 	[Export] float maxFallSpeed = 1000f;
+	[Export] float turnSpeed = 30.0f;
+	[Export] float maxFallSpeedX = 260;
+	
 	// Called when the node enters the scene tree for the first time.
 
 	public override void Enter()
@@ -33,47 +36,56 @@ public partial class FallState : PlayerState
 	public override void PhysicsUpdate(double delta)
 	{
 		stateMachine.DashCoolDownTimer -= delta;
-
 		velocity = parent.Velocity;
-		float gravity = (float)(parent.GetGravity().Y * gravityPush);
+		if (velocity.X > maxFallSpeedX)
+		{
+			velocity.X = maxFallSpeedX;
+		}
+		velocity = parent.Velocity;
 		if (Input.IsActionPressed("move_down"))
 		{
-			gravity = (float)(downExtraPush * parent.GetGravity().Y * gravityPush);
 			parent.SetCollisionMaskValue(2, false);
+			velocity.Y += (float)downExtraPush;
 		}
 		else
 		{
 			parent.SetCollisionMaskValue(2, true);
 		}
-		velocity.Y += (float)(delta * gravity);
+		//velocity.Y += (float)(delta * gravity);
 
-
-		var movment = GetMovmentDirection() * speed;
+		velocity.Y = parent.velocityCalc.GetFallVelocity(false, parent.jumpCutOff, parent.downMult, delta).Y;
+		parent.Velocity = velocity;
+		var movment = GetMovmentDirection();
+		velocity.X = (float)movment * speed;
 
 		if (movment != 0)
 		{
 			animations.FlipH = movment < 0;
-			velocity.X = (float)Mathf.MoveToward(velocity.X, movment, speed * runAcc);
+			//velocity.X = (float)Mathf.MoveToward(velocity.X, movment, speed * runAcc);
 
 		}
-		else { velocity.X = Mathf.MoveToward(velocity.X, 0, (float)runDecc * speed); }
-
-
+		
+		velocity.X = parent.velocityCalc.GetRunVelocityX(velocity, delta, turnSpeed, new Vector2((float)parent.airAcc, 0), new Vector2((float)parent.airDecc, 0)).X;
 		parent.Velocity = velocity;
-		parent.MoveAndSlide();
+
+			//velocity = parent.velocityCalc.GetRunVelocityX(velocity, delta, turnSpeed, new Vector2((float)runAcc, 0), new Vector2((float)runDecc, 0));
+
 		if (!parent.IsOnFloor())
 		{
 			animations.Play(animationName);
 		}
 
-		if (velocity.Y > maxFallSpeed)
-		{
-			velocity.Y = maxFallSpeed;
-		}
-		parent.Velocity = velocity;
-		TransferChecks();
+			if (velocity.Y > maxFallSpeed)
+			{
+				velocity.Y = maxFallSpeed;
+			}
+			parent.Velocity = velocity;
+			parent.MoveAndSlide();
 
-	}
+			TransferChecks();
+
+		}
+	
 
 	protected override void TransferChecks()
 	{

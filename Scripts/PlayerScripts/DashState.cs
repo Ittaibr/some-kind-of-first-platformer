@@ -1,9 +1,11 @@
 using Godot;
 using System;
+using System.Runtime.Serialization;
 
 public partial class DashState : PlayerState
 {
-	[Export]protected double DashStrength;
+	[Export] protected double dashEndStrength = 150;
+	[Export] protected double DashStrength;
 	[Export] protected double timeLengthToDash;
 	protected double dashTimer =0;
 	[Export]protected double totalDashDistance = 100;
@@ -37,6 +39,12 @@ public partial class DashState : PlayerState
 	public override void Exit()
 	{
 		dashDistance = 0;
+		if (animations.FlipH)
+		{
+			velocity.X = -(float)dashEndStrength;
+		}
+		else velocity.X = (float)dashEndStrength ;
+		parent.Velocity = velocity;
 		stateMachine.DashCoolDownTimer = stateMachine.DashCoolDown;
 		DashStrength = Mathf.Abs(DashStrength);
 	}
@@ -62,6 +70,12 @@ public partial class DashState : PlayerState
 		if (IsWantDownAttack() && !parent.IsOnFloor() && parent.DownAttacksLeft > 0)
 		{
 			TransitionTo("DownAttack");
+		}
+		if (parent.IsOnWall())
+		{
+			GD.Print("dash to wall slide");
+			TransitionTo("WallSlide");
+			return;
 		}
 		if (dashTimer <= 0 || dashDistance >= totalDashDistance)
 		{

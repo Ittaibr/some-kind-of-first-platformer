@@ -12,8 +12,8 @@ public partial class CharacterMoveComponent : MoveInterface
 	{
 		knockbackVelocity = new Vector2((float)velocity, 0);
 	}
-	public double GetKnockbackVelocity()
+	public Vector2 GetKnockbackVelocity()
 	{
-		return knockbackVelocity.X;
+		return knockbackVelocity;
 	}
 }

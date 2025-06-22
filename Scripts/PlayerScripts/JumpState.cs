@@ -3,7 +3,13 @@ using System;
 
 public partial class JumpState : PlayerState
 {
-	[Export] float jumpForce = 400;
+	private bool isWantJump = true;
+	[Export] double timeToJump = 2;
+	[Export] double jumpHeight = 120;
+	[Export] double jumpTime = 0.5;
+	[Export] double fallTime = 0.25;
+	[Export] double jumpCutOff = 1.5;
+	[Export] double turnSpeed = 300;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -15,14 +21,16 @@ public partial class JumpState : PlayerState
 		GD.Print("jump entered");
 
 		base.Enter();
+		isWantJump = true;
 		stateMachine.jumpsLeft -= 1;
-		GD.Print("jump has " +stateMachine.jumpsLeft + " jumps left");
+		GD.Print("jump has " + stateMachine.jumpsLeft + " jumps left");
 		animations.Play(animationName);
+		velocity = parent.velocityCalc.GetJumpVelocity(jumpHeight,jumpTime,fallTime,isWantJump,true);
+		parent.Velocity = velocity;
 
+		//velocity.Y = -jumpHeight;
 
-		velocity.Y = -jumpForce;
-
-    }
+	}
 	public override void Update(double delta)
 	{
 		
@@ -30,29 +38,31 @@ public partial class JumpState : PlayerState
 
 	public override void PhysicsUpdate(double delta)
 	{
+		
+
 		animations.Play(animationName);
 
 		stateMachine.DashCoolDownTimer -= delta;
 
-		float gravity = parent.GetGravity().Y;
-		velocity.Y += (float)(delta * gravity);
-
-		if (velocity.Y < 0 && Input.IsActionJustReleased("jump"))
+		if (!Input.IsActionPressed("jump"))
 		{
-			velocity.Y *= (float)jumpDecc;
+			isWantJump = false;
 		}
+		else{ isWantJump = true;}
 
+		velocity.Y = parent.velocityCalc.GetJumpVelocity(jumpHeight,jumpTime,fallTime,isWantJump,false,jumpCutOff,delta).Y;
+		parent.Velocity = velocity;
 
-		var movment = GetMovmentDirection() * speed;
+		var movment = GetMovmentDirection();
 		if (movment != 0)
 		{
 
 			animations.FlipH = movment < 0;
-			velocity.X = (float)Mathf.MoveToward(velocity.X, movment, speed * runAcc);
 
 		}
-		else { velocity.X = Mathf.MoveToward(velocity.X, 0, (float)runDecc * speed); }
-
+		velocity.X = (float)movment * speed;
+		velocity.X = parent.velocityCalc.GetRunVelocityX(velocity, delta, turnSpeed, new Vector2((float)parent.airAcc, 0), new Vector2((float)parent.airDecc, 0)).X;
+		parent.Velocity = velocity;
 
 		parent.Velocity = velocity;
 

@@ -5,6 +5,8 @@ using System.Linq.Expressions;
 public partial class RunState : PlayerState
 {
 	[Export]private double timer = 10;
+	[Export] private double turnSpeed = 50;
+	[Export] private float maxSpeed = 300;
 	private double tempTimer = 0;
 	private double knockbackVelocity = 0;
 	// Called when the node enters the scene tree for the first time.
@@ -32,21 +34,25 @@ public partial class RunState : PlayerState
 		/*float gravity = parent.GetGravity().Y;
 		velocity.Y += (float)(delta * gravity);*/
 		stateMachine.DashCoolDownTimer -= delta;
-		var movment = GetMovment();
+		velocity = parent.Velocity;
+
+		if (velocity.X > maxSpeed) velocity.X = maxSpeed;
+		var movment = GetMovmentDirection();
 
 		if (movment != 0)
 		{
 			animations.FlipH = movment < 0;
-			velocity.X = (float)Mathf.MoveToward(velocity.X, movment, speed * runAcc);
 		}
-		else { velocity.X = Mathf.MoveToward(velocity.X, 0, (float)runDecc * speed); }
-		if (velocity.X > speed){velocity.X = speed;}
+		velocity.X = (float)movment * speed;
 		
-		
+		//if (velocity.X > speed) { velocity.X = speed; }
+
+		velocity = parent.velocityCalc.GetRunVelocityX(velocity, delta, turnSpeed, new Vector2((float)runAcc, 0), new Vector2((float)runDecc, 0));
+
 		parent.Velocity = velocity;
 		parent.MoveAndSlide();
 		TransferChecks();
-	}
+		}
 	public override void Update(double delta)
 	{
 		

@@ -8,6 +8,7 @@ public partial class Enemy : CharacterBody2D
 	[Export]public PatrolUsingPointsComponent patrolComponent;
 	[Export] public CharacterMoveComponent MoveComp;
 	[Export] public HitBoxComponent HitBox { get; set; }
+	[Export] public VelocityCalc2d VelocityCalc { get; set; }
 
 	public AnimatedSprite2D animations;
 	[Export]private EnemyStateMachine StateMachine;

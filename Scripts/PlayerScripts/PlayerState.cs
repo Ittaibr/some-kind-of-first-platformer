@@ -41,7 +41,7 @@ public partial class PlayerState : Node
 	{
 		MoveComp.SetKnockbackVelocity(velocity);
 	}
-	protected virtual double GetKnockbackVelocity()
+	protected virtual Vector2 GetKnockbackVelocity()
 	{
 		return MoveComp.GetKnockbackVelocity();
 	}

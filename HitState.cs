@@ -21,7 +21,7 @@ public partial class HitState :PlayerState
 		GD.Print("HitState entered");
 		isFinished = false;
 		health.SetTemporaryImmortalityTimer(invincibilityTimer);
-		velocity.X = (float)GetKnockbackVelocity();
+		velocity = GetKnockbackVelocity();
 		SetKnockbackVelocity(Vector2.Zero);
 		GD.Print("knockback velocity is " + GetKnockbackVelocity());
 		

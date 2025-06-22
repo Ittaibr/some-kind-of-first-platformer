@@ -1,4 +1,4 @@
-[gd_scene load_steps=96 format=3 uid="uid://udflyx6jsf2a"]
+[gd_scene load_steps=99 format=3 uid="uid://udflyx6jsf2a"]
 
 [ext_resource type="Script" uid="uid://b5eyv3116ao5y" path="res://Scripts/PlayerScripts/Player.cs" id="1_b26j0"]
 [ext_resource type="Texture2D" uid="uid://gasahsauq5u4" path="res://art/Warrior/SpriteSheet/Warrior_Sheet-Effect.png" id="2_nvl01"]
@@ -33,13 +33,11 @@
 [ext_resource type="Script" uid="uid://cm8n6jpsqmprv" path="res://SlideJumpState.cs" id="30_efrwb"]
 [ext_resource type="Script" uid="uid://3gwfin8hg7rl" path="res://DownAttackState.cs" id="31_hiqhm"]
 [ext_resource type="Script" uid="uid://rr23nuoms327" path="res://SlideCoyoteState.cs" id="31_tkwlq"]
+[ext_resource type="Script" uid="uid://dbd6u857e1pth" path="res://KnockBackJumpState.cs" id="32_tkwlq"]
+[ext_resource type="PackedScene" uid="uid://cw57ewibwsdci" path="res://velocity_calc_2d.tscn" id="35_hl5qd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bwjto"]
 size = Vector2(10.3333, 18.5)
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbfsw"]
-radius = 3.0
-height = 13.3333
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u1c27"]
 atlas = ExtResource("2_nvl01")
@@ -529,6 +527,10 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbfsw"]
+radius = 2.0
+height = 8.0
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pylmc"]
 radius = 3.33333
 height = 14.6667
@@ -536,13 +538,20 @@ height = 14.6667
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kh4g0"]
 size = Vector2(10.6667, 20)
 
-[node name="player" type="CharacterBody2D" node_paths=PackedStringArray("hitBox", "hurtBox")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hiqhm"]
+size = Vector2(20, 3)
+
+[node name="player" type="CharacterBody2D" node_paths=PackedStringArray("hitBox", "hurtBox", "velocityCalc")]
 scale = Vector2(1.5, 1.5)
 collision_layer = 48
 collision_mask = 3
 script = ExtResource("1_b26j0")
 hitBox = NodePath("HitBoxComponent")
 hurtBox = NodePath("HurtBoxComponent")
+velocityCalc = NodePath("VelocityCalc2d")
+downMult = 2.5
+jumpCutOff = 1.5
+airDecc = 1000.0
 
 [node name="HitBoxComponent" parent="." instance=ExtResource("2_u1c27")]
 collision_layer = 8
@@ -554,6 +563,12 @@ position = Vector2(10.1667, 0.25)
 shape = SubResource("RectangleShape2D_bwjto")
 disabled = true
 
+[node name="playerSprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_0hol4")
+animation = &"Crouch"
+frame_progress = 0.0659705
+
 [node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("moveInterface", "health") instance=ExtResource("9_q13i1")]
 disable_mode = 1
 collision_layer = 0
@@ -562,15 +577,11 @@ moveInterface = NodePath("../PlayerMoveComp")
 health = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBoxComponent"]
-position = Vector2(0.666667, 2.66667)
+position = Vector2(1, 5.33333)
 shape = SubResource("CapsuleShape2D_pbfsw")
 
-[node name="playerSprite" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_0hol4")
-animation = &"Crouch"
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 3.33333)
 shape = SubResource("CapsuleShape2D_pylmc")
 
@@ -587,10 +598,10 @@ position_smoothing_enabled = true
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("6_606se")
-intialState = NodePath("Fall")
-Speed = 150.0
-GravityPush = 1.43
-DashCoolDown = 0.7
+intialState = NodePath("Run")
+RunAcc = 330.0
+RunDecc = 950.0
+DashCoolDown = 0.4
 
 [node name="SimpleAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitBox")]
 script = ExtResource("12_urp6f")
@@ -604,11 +615,15 @@ animationName = "Idle"
 
 [node name="Jump" type="Node" parent="StateMachine"]
 script = ExtResource("6_1jxqw")
-jumpForce = 300.0
+jumpHeight = 100.0
+jumpCutOff = 2.5
+turnSpeed = 1000.0
 animationName = "Jump"
 
 [node name="Run" type="Node" parent="StateMachine"]
 script = ExtResource("6_2hs0m")
+turnSpeed = 1200.0
+maxSpeed = 200.0
 
 [node name="Roll" type="Node" parent="StateMachine"]
 script = ExtResource("13_5tmop")
@@ -619,6 +634,7 @@ animationName = "Roll"
 
 [node name="Dash" type="Node" parent="StateMachine"]
 script = ExtResource("9_nvl01")
+dashEndStrength = 180.0
 DashStrength = 400.0
 timeLengthToDash = 0.3
 totalDashDistance = 800.0
@@ -626,13 +642,15 @@ animationName = "Dash"
 
 [node name="Fall" type="Node" parent="StateMachine"]
 script = ExtResource("9_b26j0")
-downExtraPush = 1.17
+downExtraPush = 20.0
 maxFallSpeed = 700.0
+turnSpeed = 1100.0
+maxFallSpeedX = 210.0
 animationName = "Fall"
 
 [node name="DoubleJump" type="Node" parent="StateMachine"]
 script = ExtResource("11_urp6f")
-jumpForce = 300.0
+jumpHeight = 80.0
 animationName = "Jump"
 
 [node name="SimpleAttackContinue" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitBox")]
@@ -650,7 +668,7 @@ animationName = "Hit"
 [node name="WallSlide" type="Node" parent="StateMachine"]
 script = ExtResource("18_pbfsw")
 wallSlideSpeed = 40.0
-jumpXvelocity = 350.0
+jumpXvelocity = 170.0
 animationName = "WallSlide"
 
 [node name="DashAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitBox")]
@@ -669,19 +687,26 @@ animationName = "Fall"
 
 [node name="SlideJump" type="Node" parent="StateMachine"]
 script = ExtResource("30_efrwb")
-slideHorizontalForce = 300.0
-jumpForce = 220.0
+slideHorizontalForce = 350.0
+slideGravityDec = 0.7
+jumpHeight = 15.0
+jumpTime = 0.1
+fallTime = 0.1
 animationName = "Jump"
 
-[node name="DownAttack" type="Node" parent="StateMachine"]
+[node name="DownAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("collision")]
 script = ExtResource("31_hiqhm")
 downAttackForce = 500.0
+collision = NodePath("../../DownAttackHitbox/CollisionShape2D")
 animationName = "Crouch"
 
 [node name="SlideCoyote" type="Node" parent="StateMachine"]
 script = ExtResource("31_tkwlq")
 bufferTime = 0.18
 downExtraPush = 1.142
+
+[node name="KnockBackJump" type="Node" parent="StateMachine"]
+script = ExtResource("32_tkwlq")
 
 [node name="PlayerMoveComp" type="Node" parent="."]
 script = ExtResource("11_ivps1")
@@ -692,7 +717,7 @@ collision = NodePath("../HurtBoxComponent/CollisionShape2D")
 [node name="DashAttackHitBox" parent="." instance=ExtResource("2_u1c27")]
 collision_layer = 8
 collision_mask = 0
-Damage = 2
+Damage = 3
 KnockbackVelocity = Vector2(200, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DashAttackHitBox"]
@@ -700,8 +725,22 @@ position = Vector2(14, 0)
 shape = SubResource("RectangleShape2D_kh4g0")
 disabled = true
 
+[node name="DownAttackHitbox" parent="." instance=ExtResource("2_u1c27")]
+scale = Vector2(0.666667, 0.666667)
+collision_layer = 15
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DownAttackHitbox"]
+position = Vector2(0, 17.5)
+shape = SubResource("RectangleShape2D_hiqhm")
+disabled = true
+
+[node name="VelocityCalc2d" parent="." node_paths=PackedStringArray("character") instance=ExtResource("35_hl5qd")]
+character = NodePath("..")
+
 [connection signal="animation_finished" from="playerSprite" to="StateMachine/SimpleAttack" method="OnAnimationStop"]
 [connection signal="animation_finished" from="playerSprite" to="StateMachine/SimpleAttackContinue" method="OnAnimationStop"]
 [connection signal="animation_finished" from="playerSprite" to="StateMachine/Hit" method="OnAnimationStop"]
 [connection signal="HealthDepleted" from="HealthComponent" to="." method="OnHealthDepleted"]
 [connection signal="ReceivedDamage" from="HealthComponent" to="StateMachine" method="OnHit"]
+[connection signal="HitBody" from="DownAttackHitbox" to="StateMachine/DownAttack" method="OnHitBody"]

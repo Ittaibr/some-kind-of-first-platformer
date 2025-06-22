@@ -9,6 +9,14 @@ public partial class Player : CharacterBody2D
 	[Export] public HitBoxComponent hitBox;
 	[Export] public HurtBoxComponent hurtBox;
 	[Export] public int totaDdownAttacks = 1;
+	[Export] public Vector2 knockbackJumpVelocity = new Vector2(0, 0);
+	[Export] public VelocityCalc2d velocityCalc;
+	[Export] public double downMult = 1.1;
+	[Export] public double gravityScale = 1;
+	[Export] public double jumpHeight = 300;
+	[Export] public double jumpCutOff = 0.1;
+	[Export] public double airAcc = 300;
+	[Export] public double airDecc = 400;
 	public int DownAttacksLeft { get; set; } = 0;
 
 

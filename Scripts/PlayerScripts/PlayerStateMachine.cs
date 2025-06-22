@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 public partial class PlayerStateMachine : Node
 {
@@ -8,13 +9,14 @@ public partial class PlayerStateMachine : Node
 	private Dictionary<string, PlayerState> states;
 	private PlayerState currentState;
 	[Export] public float Speed { get; set; } = 200;
-	[Export(PropertyHint.Range, "0,1")] public double RunAcc { get; set; } = 0.4;
-	[Export(PropertyHint.Range, "0,1")] public double RunDecc { get; set; } = 0.3;
-	[Export(PropertyHint.Range, "1,2")] public double GravityPush { get; set; } = 10;
-	[Export(PropertyHint.Range, "0,1")] public double JumpDecc { get; set; } = 0.6;
+	[Export] public double RunAcc { get; set; } = 0.4;
+	[Export] public double RunDecc { get; set; } = 0.3;
+	[Export] public double GravityPush { get; set; } = 10;
+	[Export] public double JumpDecc { get; set; } = 0.6;
 	[Export] public double DashCoolDown { get; set; } = 3;
 	public double DashCoolDownTimer;
 	[Export] public int jumpsInAir = 2;
+	private Player parent;
 	public int jumpsLeft { get; set; }
 
 	// Called when the node enters the scene tree for the first time.
@@ -24,6 +26,7 @@ public partial class PlayerStateMachine : Node
 	}
 	public void Init(Player parent, AnimatedSprite2D animations, MoveInterface moveComp)
 	{
+		this.parent = parent;
 		states = new Dictionary<string, PlayerState>();
 		foreach (Node node in GetChildren())
 		{
@@ -48,6 +51,7 @@ public partial class PlayerStateMachine : Node
 	{
 		if (!states.ContainsKey(key) || currentState == states[key])
 		{
+			GD.PrintErr("Transition to state " + key + " failed. State not found or already in that state.");
 			return;
 		}
 		GD.Print(key);
@@ -64,6 +68,7 @@ public partial class PlayerStateMachine : Node
 	}
 	public override void _PhysicsProcess(double delta)
 	{
+
 		currentState.PhysicsUpdate(delta);
 	}
 	public override void _UnhandledInput(InputEvent @event)

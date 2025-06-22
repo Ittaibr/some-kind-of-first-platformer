@@ -30,6 +30,16 @@ public partial class CoyoteBufferState : FallState
 			TransitionTo("Jump");
 			return;
 		}
+		if (IsWantDash())
+		{
+			TransitionTo("Dash");
+			return;
+		}
+		if (IsWantDownAttack())
+		{
+			TransitionTo("DownAttack");
+			return;
+		}
 		if (bufferTimer <= 0)
 		{
 			TransitionTo("Fall");

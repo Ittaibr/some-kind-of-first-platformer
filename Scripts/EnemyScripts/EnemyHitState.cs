@@ -16,7 +16,7 @@ public partial class EnemyHitState : EnemyState
 		tempTimer = timer;
 		animations.Play(animationName);
 		GD.Print("EnemyHitState entered");
-		velocity.X = (float)parent.MoveComp.GetKnockbackVelocity();
+		velocity = parent.MoveComp.GetKnockbackVelocity();
 		GD.Print("knockback velocity is " + parent.MoveComp.GetKnockbackVelocity());
 		parent.MoveComp.SetKnockbackVelocity(Vector2.Zero);
 	}

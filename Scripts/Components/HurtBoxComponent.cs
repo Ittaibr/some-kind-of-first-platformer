@@ -6,11 +6,11 @@ public partial class HurtBoxComponent : Area2D
 {
 	[Export] MoveInterface moveInterface;
 	[Export] HealthComponent health;
+	[Export] public Vector2 knockbackVelocity = Vector2.Zero;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		AreaEntered += OnAreaEnterd;
-		
 	}
 
 	private void OnAreaEnterd(Area2D body)
@@ -18,8 +18,9 @@ public partial class HurtBoxComponent : Area2D
 		if (body is HitBoxComponent)
 		{
 			HitBoxComponent hitBox = (HitBoxComponent)body;
-			moveInterface.SetKnockbackVelocity(hitBox.KnockbackVelocity);
-			health.SetHealth(health.GetHealth() - hitBox.Damage);
+			if (moveInterface != null) moveInterface.SetKnockbackVelocity(hitBox.KnockbackVelocity);
+			if (health != null) health.SetHealth(health.GetHealth() - hitBox.Damage);
+			hitBox.EmitHitBodySignal(this);
 		}
 	}
 

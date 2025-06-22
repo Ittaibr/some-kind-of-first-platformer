@@ -23,7 +23,6 @@ public partial class SlideJumpState : JumpState
 		float gravity = parent.GetGravity().Y;
 		velocity.Y += (float)(delta * gravity * slideGravityDec);
 
-
 		var movment = GetMovmentDirection() * speed;
 		if (movment != 0)
 		{
