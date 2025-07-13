@@ -55,11 +55,7 @@ public partial class PatrolUsingPointsComponent : Node2D
 			}
 			direction = ToLocal(currentPosition.Position).Normalized();
 
-			// You should move the enemy towards the marker here, if not handled elsewhere
-			// Example:
-			// Vector2 moveDir = (currentPosition.Position - GlobalPosition).Normalized();
-			// float speed = 100f;
-			// GlobalPosition += moveDir * speed * (float)delta;
+
 		}
 	}
 

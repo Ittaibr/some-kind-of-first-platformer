@@ -6,6 +6,7 @@ public partial class DownAttackState : PlayerState
 	[Export] private float downAttackForce = 300f;
 	[Export] private double downAttackDuration = 0.2;
 	[Export] protected CollisionShape2D collision;
+	[Export] protected Vector2 defaultKnockback = new Vector2(100,300);
 	private double downAttackTimer = 0;
 	private bool isHit = false; // Flag to check if the player has hit an enemy
 	// Called when the node enters the scene tree for the first time.
@@ -15,6 +16,8 @@ public partial class DownAttackState : PlayerState
 		//isHit = false; // Reset the hit flag when entering the state
 		collision.Disabled = false; // Enable the collision shape
 		parent.DownAttacksLeft -= 1;
+		parent.dashsLeft = parent.dashsInAir;
+
 		base.Enter();
 		GD.Print("Down Attack State Entered");
 		animations.Play(animationName);
@@ -24,7 +27,8 @@ public partial class DownAttackState : PlayerState
 	
 	public override void Exit()
 	{
-		collision.Disabled = true;
+		collision.SetDeferred("disabled", true); // Disable the collision shape using deferred call
+
 		base.Exit();
 		GD.Print("Down Attack State Exiting");
 		
@@ -62,7 +66,7 @@ public partial class DownAttackState : PlayerState
 			GD.Print("Transitioning to KnockbackJump from Down Attack");
 			return;
 		} 
-		else if (IsWantDash())
+		else if (IsWantDash() && parent.dashsLeft > 0)
 		{
 			TransitionTo("Dash");
 		}
@@ -100,9 +104,28 @@ public partial class DownAttackState : PlayerState
 	{
 		GD.Print("Hit an enemy with Down Attack");
 		var knocback = body.knockbackVelocity;
+
+        if (!body.isFixedKnockbackLengthX && GetMovmentDirection() != 0)
+		{
+			knocback.X = defaultKnockback.X * (float)GetMovmentDirection();
+		}
+		if (!body.isFixedKnockbackLengthY)
+		{
+			knocback.Y = defaultKnockback.Y;
+		}
+
+		knocback.Y *= -1;
+
+		parent.dashsLeft = parent.dashsInAir;
+
+		/*if (!body.isFixedKnockbackDirection && parent.animations.FlipH)
+		{
+			knocback.X *= -1;
+		}*/
 		isHit = true; // Set the flag to true when hitting an enemy
-		if (body.Position.X - collision.Position.X < 0) knocback.X *= -1; // Flip the velocity if the hitbox is to the left of the player
-		if (body.Position.Y - collision.Position.Y < 0) knocback.Y *= -1; // Flip the velocity if the hitbox is above the player
+
+		//if (body.Position.X - collision.Position.X < 0) knocback.X *= -1; // Flip the velocity if the hitbox is to the left of the player
+		//if (body.Position.Y - collision.Position.Y < 0) knocback.Y *= -1; // Flip the velocity if the hitbox is above the player
 		parent.knockbackJumpVelocity = knocback; // Set the knockback velocity for the player
 		collision.CallDeferred("set_disabled", true); // <-- Use deferred call here
 	}

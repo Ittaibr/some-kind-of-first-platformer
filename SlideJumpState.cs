@@ -12,6 +12,8 @@ public partial class SlideJumpState : JumpState
 		//stateMachine.jumpsLeft += 1;
 		base.Enter();
 		velocity.X = slideHorizontalForce * (animations.FlipH ? -1 : 1);
+
+		parent.dashsLeft--;
 	}
 
 	public override void PhysicsUpdate(double delta)
@@ -65,7 +67,7 @@ public partial class SlideJumpState : JumpState
 			TransitionTo("Idle");
 		}
 
-		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
+		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0 && parent.dashsLeft >0)
 		{
 			TransitionTo("Dash");
 		}

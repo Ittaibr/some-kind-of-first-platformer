@@ -18,9 +18,12 @@ public partial class IdleState : PlayerState
 	public override void Enter()
 	{
 		base.Enter();
+
 		parent.DownAttacksLeft = parent.totaDdownAttacks;
-		velocity.X = 0;
 		stateMachine.jumpsLeft = stateMachine.jumpsInAir;
+		parent.dashsLeft = parent.dashsInAir;
+
+		velocity.X = 0;
 		animations.Frame = 0;
 		animations.Stop();
 		animations.Play(animationName);
@@ -50,7 +53,7 @@ public partial class IdleState : PlayerState
 			stateMachine.jumpsLeft -=1;
 			TransitionTo("Fall");
 		}
-		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
+		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0 && parent.dashsLeft > 0)
 		{
 			GD.Print("idle to Roll");
 			TransitionTo("Roll");

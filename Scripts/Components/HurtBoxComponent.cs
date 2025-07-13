@@ -7,6 +7,9 @@ public partial class HurtBoxComponent : Area2D
 	[Export] MoveInterface moveInterface;
 	[Export] HealthComponent health;
 	[Export] public Vector2 knockbackVelocity = Vector2.Zero;
+	[Export] public bool isFixedKnockbackDirection = false;
+	[Export] public bool isFixedKnockbackLengthX = true;
+	[Export] public bool isFixedKnockbackLengthY = true;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{

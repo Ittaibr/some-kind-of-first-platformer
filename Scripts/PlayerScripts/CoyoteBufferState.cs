@@ -25,8 +25,14 @@ public partial class CoyoteBufferState : FallState
 
 	protected override void TransferChecks()
 	{
+		if (parent.IsOnFloor())
+		{
+			TransitionTo("Idle");
+			return;
+		}
 		if (MoveComp.IsWantJump())
 		{
+
 			TransitionTo("Jump");
 			return;
 		}

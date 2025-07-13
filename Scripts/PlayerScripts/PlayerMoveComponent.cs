@@ -21,6 +21,19 @@ public partial class PlayerMoveComponent : MoveInterface
 		}
 		return 0;
 	}
+
+	public double GetCameraDirectionX()
+	{
+		if (Input.IsActionPressed("cameraLeft"))
+		{
+			return -1;
+		}
+		else if (Input.IsActionPressed("cameraRight"))
+		{
+			return 1;
+		}
+		else return 0;
+	}
 	public virtual bool IsWantDownAttack()
 	{
 		return Input.IsActionJustPressed("DownAttack");

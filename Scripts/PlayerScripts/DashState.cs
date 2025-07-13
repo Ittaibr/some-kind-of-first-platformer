@@ -20,7 +20,7 @@ public partial class DashState : PlayerState
 
 		base.Enter();
 		GD.Print("dash entered");
-
+		parent.dashsLeft--;
 
 
 		pastPos = parent.Position;

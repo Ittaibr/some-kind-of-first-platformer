@@ -209,21 +209,21 @@ radius = 6.66667
 [sub_resource type="CircleShape2D" id="CircleShape2D_e1ltt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e1ltt"]
-size = Vector2(31.6667, 35)
+size = Vector2(36.25, 39.5833)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2u8i"]
 radius = 150.148
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("patrolComponent", "MoveComp", "HitBox", "VelocityCalc", "StateMachine")]
-scale = Vector2(0.6, 0.6)
-collision_layer = 8
-collision_mask = 7
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("patrolComponent", "MoveComp", "HitBox", "VelocityCalc", "hurtBox", "StateMachine")]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_epg4t")
-WalkSpeed = 60.0
+WalkSpeed = 65.0
 patrolComponent = NodePath("Components/PatrolUsingPointsComponent")
 MoveComp = NodePath("Components/CharacterMoveComponent")
 HitBox = NodePath("Components/HitBoxComponent")
 VelocityCalc = NodePath("VelocityCalc2d")
+hurtBox = NodePath("Components/HurtBoxComponent")
 StateMachine = NodePath("StateMachine")
 
 [node name="EnemySprite" type="AnimatedSprite2D" parent="."]
@@ -240,8 +240,9 @@ intialState = NodePath("Roaming")
 
 [node name="Roaming" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitBox")]
 script = ExtResource("4_wujgv")
-Acceleration = Vector2(20, 20)
-Deceleration = Vector2(20, 20)
+turnSpeed = 270.0
+Acceleration = Vector2(130, 130)
+Deceleration = Vector2(200, 200)
 totalWalkDistance = 500.0
 timeLengthToWalk = 5.0
 hitBox = NodePath("../../Components/HitBoxComponent")
@@ -279,25 +280,27 @@ collision_layer = 0
 collision_mask = 8
 moveInterface = NodePath("../CharacterMoveComponent")
 health = NodePath("../HealthComponent")
-knockbackVelocity = Vector2(0, 550)
+isFixedKnockbackLengthX = false
+isFixedKnockbackLengthY = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtBoxComponent"]
-position = Vector2(0.166667, -4.16667)
+position = Vector2(0.375002, -6.45833)
 shape = SubResource("RectangleShape2D_e1ltt")
 
 [node name="CharacterMoveComponent" parent="Components" instance=ExtResource("10_pwjut")]
 
 [node name="SimpleChaseComponent" parent="Components" node_paths=PackedStringArray("moveInterface") instance=ExtResource("16_jmwgi")]
 collision_layer = 0
-collision_mask = 32
+collision_mask = 16
 moveInterface = NodePath("../CharacterMoveComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/SimpleChaseComponent"]
-visible = false
 shape = SubResource("CircleShape2D_g2u8i")
 
 [node name="VelocityCalc2d" parent="." node_paths=PackedStringArray("character") instance=ExtResource("17_jmwgi")]
 character = NodePath("..")
+
+[node name="Node" type="Node" parent="."]
 
 [connection signal="HealthDepleted" from="Components/HealthComponent" to="." method="OnHealthDepleted"]
 [connection signal="ReceivedDamage" from="Components/HealthComponent" to="StateMachine" method="OnHit"]

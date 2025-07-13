@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO.Pipes;
 
 public partial class PlayerStateMachine : Node
 {
@@ -13,15 +14,25 @@ public partial class PlayerStateMachine : Node
 	[Export] public double RunDecc { get; set; } = 0.3;
 	[Export] public double GravityPush { get; set; } = 10;
 	[Export] public double JumpDecc { get; set; } = 0.6;
+	[Export] public Camera2D camera;
+
 	[Export] public double DashCoolDown { get; set; } = 3;
 	public double DashCoolDownTimer;
 	[Export] public int jumpsInAir = 2;
 	private Player parent;
+	private Vector2 vect = Vector2.Zero;
+	private float speed;
+	private float smoothSpeed = 1.7f;
+	private bool isFirstTurnCameraFrame = true;
+	private double pastDirection = 0;
+
 	public int jumpsLeft { get; set; }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		
+
 		DashCoolDownTimer = DashCoolDown;
 	}
 	public void Init(Player parent, AnimatedSprite2D animations, MoveInterface moveComp)
@@ -45,6 +56,11 @@ public partial class PlayerStateMachine : Node
 		GD.Print(intialState);
 		currentState = GetNode<PlayerState>(intialState);
 		currentState.Enter();
+
+		speed = parent.smoothSpeed;
+		smoothSpeed = parent.smoothSpeed;
+		camera.Offset = vect;
+		
 	}
 
 	public void TransitionTo(string key)
@@ -68,8 +84,53 @@ public partial class PlayerStateMachine : Node
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-
 		currentState.PhysicsUpdate(delta);
+		CameraHandler();
+	}
+
+	private void CameraHandler()
+	{
+		
+		speed = smoothSpeed;
+		/*if (parent.Velocity.X / (parent.Velocity.X) != (vect.X / Mathf.Abs(vect.X)) && vect.X * parent.Velocity.X != 0)
+		{
+			if (!isFirstTurnCameraFrame)
+			{
+
+				speed = smoothSpeed * parent.turnCameraSpeedMultX;
+			}
+		
+
+		}*/
+
+		if (parent.moveComponent.GetCameraDirectionX() != 0)
+		{
+			vect.X += (float)parent.moveComponent.GetCameraDirectionX() * parent.manualCameraSpeedX;
+		}
+		else if (parent.Velocity.X != 0)
+		{
+			vect.X += speed * (float)parent.Velocity.X / Mathf.Abs(parent.Velocity.X);
+		}
+
+		if (Mathf.Abs(vect.X) > parent.cameraOfset.X)
+		{
+			vect.X = parent.cameraOfset.X * (vect.X / Mathf.Abs(vect.X));
+		}
+		if (pastDirection == (float)parent.Velocity.X / Mathf.Abs(parent.Velocity.X))
+		{
+			isFirstTurnCameraFrame = false;
+		}
+		else
+		{
+			isFirstTurnCameraFrame = true;
+		}
+
+		pastDirection = (float)parent.Velocity.X / Mathf.Abs(parent.Velocity.X);
+
+		camera.Offset = vect;
+
+		//GD.Print("camera offset = " + camera.Offset);
+
 	}
 	public override void _UnhandledInput(InputEvent @event)
 	{

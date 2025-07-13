@@ -96,7 +96,8 @@ public partial class WallSlideState : PlayerState
 		GD.Print("Wall slide entered");
 		base.Enter();
 		numOfWallCheckTicks = 0; // Reset the wall check ticks counter
-		
+
+		parent.dashsLeft = parent.dashsInAir;
 		//velocity.Y = 0; // Set the vertical velocity to slide down the wall
 		//parent.Velocity = velocity; // Update the player's velocity
 
@@ -131,7 +132,7 @@ public partial class WallSlideState : PlayerState
 		{
 			TransitionTo("Fall");
 		}*/
-		else if (IsWantDash())
+		else if (IsWantDash() && parent.dashsLeft >0)
 		{
 			parent.animations.FlipH = !animations.FlipH; // Maintain the current facing direction during dash
 			TransitionTo("Dash");

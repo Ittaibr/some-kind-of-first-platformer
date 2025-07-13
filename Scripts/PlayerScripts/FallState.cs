@@ -123,7 +123,7 @@ public partial class FallState : PlayerState
 
 			TransitionTo("DoubleJump");
 		}
-		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
+		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0 && parent.dashsLeft > 0)
 		{
 			GD.Print("fall to dash");
 			TransitionTo("Dash");

@@ -1,3 +1,4 @@
+using Game.Component;
 using Godot;
 using System;
 
@@ -6,7 +7,12 @@ public partial class Player : CharacterBody2D
 	public AnimatedSprite2D animations;
 	private PlayerStateMachine StateMachine;
 	public PlayerMoveComponent moveComponent;
+	[Export] public CheckPointManager checkpointManager;
+	[Export] public HealthComponent healthComponent;
 	[Export] public HitBoxComponent hitBox;
+	[Export] public int dashsInAir = 1;
+	public int dashsLeft { get; set; }
+
 	[Export] public HurtBoxComponent hurtBox;
 	[Export] public int totaDdownAttacks = 1;
 	[Export] public Vector2 knockbackJumpVelocity = new Vector2(0, 0);
@@ -17,6 +23,10 @@ public partial class Player : CharacterBody2D
 	[Export] public double jumpCutOff = 0.1;
 	[Export] public double airAcc = 300;
 	[Export] public double airDecc = 400;
+	[Export] public Vector2 cameraOfset = new Vector2(30,0);
+	[Export] public float smoothSpeed = 1.7f;
+	[Export] public float manualCameraSpeedX = 12f;
+	[Export] public float turnCameraSpeedMultX = 2.5f;
 	public int DownAttacksLeft { get; set; } = 0;
 
 
@@ -36,12 +46,18 @@ public partial class Player : CharacterBody2D
 	}
 	public override void _PhysicsProcess(double delta)
 	{
+		
 	}
 
 	private void OnHealthDepleted()
 	{
-		QueueFree();
-		CallDeferred(nameof(ReloadSceneSafely));	}
+		//QueueFree();
+		//CallDeferred(nameof(ReloadSceneSafely));	
+		GD.Print("Player health depleted, reloading scene...");
+		healthComponent.SetToMaxHealth();
+		Position = checkpointManager.GetLastCheckpoint();
+
+	}
 	private void ReloadSceneSafely()
 	{
 		GetTree().ReloadCurrentScene();

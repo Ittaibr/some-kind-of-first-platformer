@@ -3,8 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://bbbf76wg2g213" path="res://art/16-bit-spike-Sheet.png" id="1_7k7bx"]
 [ext_resource type="PackedScene" uid="uid://bwj6dwlpghm5n" path="res://Components/hit_box_component.tscn" id="2_tggh8"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_5sso0"]
-radius = 4.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_7k7bx"]
+radius = 5.0
 
 [node name="Spike" type="StaticBody2D"]
 
@@ -14,10 +14,10 @@ region_enabled = true
 region_rect = Rect2(0, 3, 16, 13)
 
 [node name="HitBoxComponent" parent="." instance=ExtResource("2_tggh8")]
-collision_layer = 24
+collision_layer = 16
 collision_mask = 0
 Damage = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxComponent"]
 position = Vector2(0, 2)
-shape = SubResource("CircleShape2D_5sso0")
+shape = SubResource("CircleShape2D_7k7bx")

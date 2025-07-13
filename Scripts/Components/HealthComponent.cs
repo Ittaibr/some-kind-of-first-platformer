@@ -57,6 +57,11 @@ namespace Game.Component
 
         }
 
+		public void SetToMaxHealth()
+		{
+			Health = MaxHealth;
+		}
+
         public void SetMaxHealth(int maxHealth)
 		{
 			int clamped;

@@ -129,7 +129,7 @@ public Vector2 GetRunVelocityX(Vector2 desiredVelocity, double delta, double tur
 		velocity.Y += appliedGravity * (float)delta;
 
 		// Preserve X velocity (handled elsewhere)
-		GD.Print("fall velocity " + velocity);
+		//GD.Print("fall velocity " + velocity);
 		return velocity;
 	}
 	
@@ -179,7 +179,7 @@ public Vector2 GetJumpVelocity(
     }
 
 		// Preserve X velocity (handled elsewhere)
-	GD.Print("jump velocity " + velocity);
+	//GD.Print("jump velocity " + velocity);
 
     return velocity;
 }

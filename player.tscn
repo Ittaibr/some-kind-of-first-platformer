@@ -533,25 +533,32 @@ height = 8.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pylmc"]
 radius = 3.33333
-height = 14.6667
+height = 9.33333
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kh4g0"]
 size = Vector2(10.6667, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hiqhm"]
-size = Vector2(20, 3)
+size = Vector2(24, 3.99999)
 
-[node name="player" type="CharacterBody2D" node_paths=PackedStringArray("hitBox", "hurtBox", "velocityCalc")]
+[node name="player" type="CharacterBody2D" node_paths=PackedStringArray("healthComponent", "hitBox", "hurtBox", "velocityCalc")]
 scale = Vector2(1.5, 1.5)
 collision_layer = 48
 collision_mask = 3
 script = ExtResource("1_b26j0")
+healthComponent = NodePath("HealthComponent")
 hitBox = NodePath("HitBoxComponent")
 hurtBox = NodePath("HurtBoxComponent")
 velocityCalc = NodePath("VelocityCalc2d")
 downMult = 2.5
 jumpCutOff = 1.5
-airDecc = 1000.0
+airDecc = 900.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.42, 1.42)
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0
 
 [node name="HitBoxComponent" parent="." instance=ExtResource("2_u1c27")]
 collision_layer = 8
@@ -566,8 +573,7 @@ disabled = true
 [node name="playerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_0hol4")
-animation = &"Crouch"
-frame_progress = 0.0659705
+animation = &"Run"
 
 [node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("moveInterface", "health") instance=ExtResource("9_q13i1")]
 disable_mode = 1
@@ -581,8 +587,7 @@ position = Vector2(1, 5.33333)
 shape = SubResource("CapsuleShape2D_pbfsw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, 3.33333)
+position = Vector2(-0.666667, 5.33333)
 shape = SubResource("CapsuleShape2D_pylmc")
 
 [node name="jumpSound" type="AudioStreamPlayer2D" parent="."]
@@ -591,17 +596,13 @@ stream = ExtResource("4_hqtel")
 [node name="changeDirectionSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_sweqy")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.5, 1.5)
-limit_smoothed = true
-position_smoothing_enabled = true
-
-[node name="StateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("6_606se")
 intialState = NodePath("Run")
 RunAcc = 330.0
-RunDecc = 950.0
-DashCoolDown = 0.4
+RunDecc = 1100.0
+camera = NodePath("../Camera2D")
+DashCoolDown = 0.12
 
 [node name="SimpleAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitBox")]
 script = ExtResource("12_urp6f")
@@ -622,7 +623,7 @@ animationName = "Jump"
 
 [node name="Run" type="Node" parent="StateMachine"]
 script = ExtResource("6_2hs0m")
-turnSpeed = 1200.0
+turnSpeed = 2200.0
 maxSpeed = 200.0
 
 [node name="Roll" type="Node" parent="StateMachine"]
@@ -650,7 +651,7 @@ animationName = "Fall"
 
 [node name="DoubleJump" type="Node" parent="StateMachine"]
 script = ExtResource("11_urp6f")
-jumpHeight = 80.0
+jumpHeight = 60.0
 animationName = "Jump"
 
 [node name="SimpleAttackContinue" type="Node" parent="StateMachine" node_paths=PackedStringArray("hitBox")]
@@ -663,6 +664,7 @@ animationName = "AttackContinue"
 [node name="Hit" type="Node" parent="StateMachine" node_paths=PackedStringArray("health")]
 script = ExtResource("17_pylmc")
 health = NodePath("../../HealthComponent")
+invincibilityTimer = 1.1
 animationName = "Hit"
 
 [node name="WallSlide" type="Node" parent="StateMachine"]
@@ -680,14 +682,14 @@ animationName = "DashAttack"
 
 [node name="CoyoteBuffer" type="Node" parent="StateMachine"]
 script = ExtResource("29_634y6")
-bufferTime = 0.18
+bufferTime = 10.0
 downExtraPush = 1.142
 maxFallSpeed = 700.0
 animationName = "Fall"
 
 [node name="SlideJump" type="Node" parent="StateMachine"]
 script = ExtResource("30_efrwb")
-slideHorizontalForce = 350.0
+slideHorizontalForce = 420.0
 slideGravityDec = 0.7
 jumpHeight = 15.0
 jumpTime = 0.1
@@ -698,6 +700,7 @@ animationName = "Jump"
 script = ExtResource("31_hiqhm")
 downAttackForce = 500.0
 collision = NodePath("../../DownAttackHitbox/CollisionShape2D")
+defaultKnockback = Vector2(130, 440)
 animationName = "Crouch"
 
 [node name="SlideCoyote" type="Node" parent="StateMachine"]
@@ -729,9 +732,10 @@ disabled = true
 scale = Vector2(0.666667, 0.666667)
 collision_layer = 15
 collision_mask = 0
+KnockbackVelocity = Vector2(0, 60)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DownAttackHitbox"]
-position = Vector2(0, 17.5)
+position = Vector2(0, 18)
 shape = SubResource("RectangleShape2D_hiqhm")
 disabled = true
 

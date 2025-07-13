@@ -13,7 +13,7 @@ public partial class RunState : PlayerState
 	public override void Enter()
 	{
 		GD.Print("run entered");
-
+		parent.dashsLeft = parent.dashsInAir;
 		base.Enter();
 		parent.DownAttacksLeft = parent.totaDdownAttacks;
 		stateMachine.jumpsLeft = stateMachine.jumpsInAir;
@@ -77,7 +77,7 @@ public partial class RunState : PlayerState
 			stateMachine.jumpsLeft -=1;
 			TransitionTo("Fall");
 		}
-		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0)
+		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0 && parent.dashsLeft >0)
 		{
 			TransitionTo("Roll");
 		}
