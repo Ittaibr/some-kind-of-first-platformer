@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://bwj6dwlpghm5n" path="res://Components/hit_box_component.tscn" id="7_hb8ge"]
 [ext_resource type="PackedScene" uid="uid://bs7go3sq33q67" path="res://Components/health_component.tscn" id="7_wujgv"]
 [ext_resource type="Script" uid="uid://bb8vopwru2fua" path="res://Scripts/EnemyScripts/Chase.cs" id="9_nnovl"]
-[ext_resource type="PackedScene" uid="uid://ctrp2yl28gquh" path="res://character_move_component.tscn" id="10_pwjut"]
+[ext_resource type="PackedScene" uid="uid://ctrp2yl28gquh" path="res://Components/character_move_component.tscn" id="10_pwjut"]
 [ext_resource type="PackedScene" uid="uid://d3k012okv0mw3" path="res://simple_chase_component.tscn" id="16_jmwgi"]
 [ext_resource type="PackedScene" uid="uid://cw57ewibwsdci" path="res://velocity_calc_2d.tscn" id="17_jmwgi"]
 
@@ -214,16 +214,18 @@ size = Vector2(36.25, 39.5833)
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2u8i"]
 radius = 150.148
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("patrolComponent", "MoveComp", "HitBox", "VelocityCalc", "hurtBox", "StateMachine")]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("PatrolMarkersRoot", "patrolComponent", "MoveComp", "HitBox", "VelocityCalc", "hurtBox", "Health", "StateMachine")]
 collision_layer = 0
-collision_mask = 0
+collision_mask = 128
 script = ExtResource("1_epg4t")
+PatrolMarkersRoot = NodePath("Node2D")
 WalkSpeed = 65.0
 patrolComponent = NodePath("Components/PatrolUsingPointsComponent")
 MoveComp = NodePath("Components/CharacterMoveComponent")
 HitBox = NodePath("Components/HitBoxComponent")
 VelocityCalc = NodePath("VelocityCalc2d")
 hurtBox = NodePath("Components/HurtBoxComponent")
+Health = NodePath("Components/HealthComponent")
 StateMachine = NodePath("StateMachine")
 
 [node name="EnemySprite" type="AnimatedSprite2D" parent="."]
@@ -300,7 +302,11 @@ shape = SubResource("CircleShape2D_g2u8i")
 [node name="VelocityCalc2d" parent="." node_paths=PackedStringArray("character") instance=ExtResource("17_jmwgi")]
 character = NodePath("..")
 
-[node name="Node" type="Node" parent="."]
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Node" type="Node" parent="Node2D"]
+
+[node name="Marker2D" type="Marker2D" parent="Node2D/Node"]
 
 [connection signal="HealthDepleted" from="Components/HealthComponent" to="." method="OnHealthDepleted"]
 [connection signal="ReceivedDamage" from="Components/HealthComponent" to="StateMachine" method="OnHit"]

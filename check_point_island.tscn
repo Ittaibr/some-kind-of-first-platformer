@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnfhoikbqec45"]
+
+[ext_resource type="Script" uid="uid://cytdmmn6vhfk6" path="res://CheckPointIsland.cs" id="1_8vuo2"]
+[ext_resource type="Texture2D" uid="uid://r7b32tpi7kb0" path="res://art/Assets/Packs/Magic Cliffs/Environment/PNG/tileset.png" id="1_kih3q"]
+[ext_resource type="PackedScene" uid="uid://cyhcaojqgd5i2" path="res://checkpoint.tscn" id="2_8vuo2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r88my"]
+size = Vector2(112, 48)
+
+[node name="CheckPointIsland" type="StaticBody2D"]
+script = ExtResource("1_8vuo2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_kih3q")
+region_enabled = true
+region_rect = Rect2(41, 24, 98, 76)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(-1.90735e-06, -3)
+scale = Vector2(3.75, 2.73437)
+polygon = PackedVector2Array(12.8, -10.6057, -12.8, -10.6057, -4.26667, 9.87429, 4.26667, 9.87429)
+
+[node name="Checkpoint" parent="." node_paths=PackedStringArray("respownMarker") instance=ExtResource("2_8vuo2")]
+collision_layer = 0
+collision_mask = 48
+respownMarker = NodePath("Marker2D")
+
+[node name="Marker2D" type="Marker2D" parent="Checkpoint"]
+position = Vector2(0, -64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoint"]
+position = Vector2(0, -56)
+shape = SubResource("RectangleShape2D_r88my")

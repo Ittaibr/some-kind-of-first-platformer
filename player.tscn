@@ -599,6 +599,7 @@ stream = ExtResource("5_sweqy")
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("6_606se")
 intialState = NodePath("Run")
+Speed = 180.0
 RunAcc = 330.0
 RunDecc = 1100.0
 camera = NodePath("../Camera2D")
@@ -616,7 +617,7 @@ animationName = "Idle"
 
 [node name="Jump" type="Node" parent="StateMachine"]
 script = ExtResource("6_1jxqw")
-jumpHeight = 100.0
+jumpHeight = 90.0
 jumpCutOff = 2.5
 turnSpeed = 1000.0
 animationName = "Jump"
@@ -682,9 +683,9 @@ animationName = "DashAttack"
 
 [node name="CoyoteBuffer" type="Node" parent="StateMachine"]
 script = ExtResource("29_634y6")
-bufferTime = 10.0
 downExtraPush = 1.142
 maxFallSpeed = 700.0
+turnSpeed = 2200.0
 animationName = "Fall"
 
 [node name="SlideJump" type="Node" parent="StateMachine"]

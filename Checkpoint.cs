@@ -4,12 +4,12 @@ using System;
 public partial class Checkpoint : Area2D
 {
 	[Export] Marker2D respownMarker;
-	[Export] CheckPointManager checkpointManager;
+	[Export] public CheckPointManager checkpointManager;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		BodyEntered += OnBodyEntered;
-
+		
 
 	}
 

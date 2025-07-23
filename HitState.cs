@@ -24,6 +24,7 @@ public partial class HitState :PlayerState
 		velocity = GetKnockbackVelocity();
 		SetKnockbackVelocity(Vector2.Zero);
 		GD.Print("knockback velocity is " + GetKnockbackVelocity());
+
 		
 	}
 	public override void Exit()

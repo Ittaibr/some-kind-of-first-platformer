@@ -53,6 +53,7 @@ public partial class Player : CharacterBody2D
 	{
 		//QueueFree();
 		//CallDeferred(nameof(ReloadSceneSafely));	
+		SetCollisionMaskValue(2, true);
 		GD.Print("Player health depleted, reloading scene...");
 		healthComponent.SetToMaxHealth();
 		Position = checkpointManager.GetLastCheckpoint();

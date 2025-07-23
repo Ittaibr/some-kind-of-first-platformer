@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Game.Component;
 
 public partial class Enemy : CharacterBody2D
 {
@@ -14,6 +15,7 @@ public partial class Enemy : CharacterBody2D
 	[Export] public bool isFixedKnockbackDirection = false;
 	[Export] public bool isFixedKnockbackLengthX = false;
 	[Export] public bool isFixedKnockbackLengthY = false;
+	[Export] public HealthComponent Health { get; set; }
 
 	public AnimatedSprite2D animations;
 	[Export]private EnemyStateMachine StateMachine;
@@ -46,9 +48,22 @@ public partial class Enemy : CharacterBody2D
 
     }
 
-
+	public void Enable()
+	{
+		HitBox.SetCollisionLayerValue(6,true);
+		hurtBox.SetCollisionMaskValue(4, true);
+		animations.Play("Idle"); 
+		Visible = true; // Make the enemy visible
+		GD.Print("Enemy enabled.");
+	}
 	private void OnHealthDepleted()
 	{
-		QueueFree();
+		HitBox.SetCollisionLayerValue(6, false);
+		hurtBox.SetCollisionMaskValue(4, false);
+		Visible = false; // Hide the enemy
+
+		animations.Play("Death");
+		GD.Print("Enemy health depleted, hiding enemy.");
+		//QueueFree();
 	}
 }

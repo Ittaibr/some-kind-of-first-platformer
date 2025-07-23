@@ -3,6 +3,8 @@ using System;
 
 public partial class CheckPointManager : Node
 {
+	[Signal]public delegate void CheckpointReachedEventHandler(Marker2D marker);
+	[Signal]public delegate void CheckpointRespawnEventHandler(Marker2D marker);
 	[Export] Player player;
 	private Marker2D RespawnMarker;
 	// Called when the node enters the scene tree for the first time.
@@ -32,6 +34,10 @@ public partial class CheckPointManager : Node
 
 	public Vector2 GetLastCheckpoint()
 	{
+		EmitSignal(SignalName.CheckpointRespawn,RespawnMarker );
 		return RespawnMarker.GlobalPosition;
 	}
+
+   
+
 }

@@ -74,10 +74,10 @@ public partial class RunState : PlayerState
 		}
 		else if (IsWantDown() && !parent.IsOnFloor())
 		{
-			stateMachine.jumpsLeft -=1;
+			stateMachine.jumpsLeft -= 1;
 			TransitionTo("Fall");
 		}
-		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0 && parent.dashsLeft >0)
+		else if (IsWantDash() && stateMachine.DashCoolDownTimer <= 0 && parent.dashsLeft > 0)
 		{
 			TransitionTo("Roll");
 		}
@@ -87,8 +87,8 @@ public partial class RunState : PlayerState
 		}
 		else if (!parent.IsOnFloor())
 		{
-			stateMachine.jumpsLeft -=1;
 			TransitionTo("CoyoteBuffer");
+			return;
 		}
 	}
 }

@@ -18,7 +18,6 @@ namespace Game.Component
 		private Timer immortalityTimer;
 		private int Health;
 
-		
 		public bool IsImmortal()
 		{
 			

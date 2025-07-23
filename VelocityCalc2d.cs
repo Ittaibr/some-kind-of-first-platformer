@@ -41,7 +41,7 @@ public Vector2 GetRunVelocityX(Vector2 desiredVelocity, double delta, double tur
 		velocity.X = x;
 		//velocity.Y = character.Velocity.Y;
 
-		GD.Print(velocity);
+		//GD.Print(velocity);
 		return velocity;
 
 

@@ -14,6 +14,13 @@ public partial class CoyoteBufferState : FallState
 		GD.Print("Coyote entered");
 	}
 
+	public override void Exit()
+	{
+		base.Exit();
+		stateMachine.jumpsLeft--;
+
+    }
+
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void PhysicsUpdate(double delta)
 	{
@@ -25,14 +32,19 @@ public partial class CoyoteBufferState : FallState
 
 	protected override void TransferChecks()
 	{
-		if (parent.IsOnFloor())
+		if (parent.IsOnFloor() && GetMovmentDirection() == 0)
 		{
 			TransitionTo("Idle");
 			return;
 		}
+		else if (parent.IsOnFloor() && GetMovmentDirection() != 0)
+		{
+			TransitionTo("Run");
+			return;
+		}
 		if (MoveComp.IsWantJump())
 		{
-
+			stateMachine.jumpsLeft++;
 			TransitionTo("Jump");
 			return;
 		}
@@ -43,6 +55,7 @@ public partial class CoyoteBufferState : FallState
 		}
 		if (IsWantDownAttack())
 		{
+			stateMachine.jumpsLeft--;
 			TransitionTo("DownAttack");
 			return;
 		}
