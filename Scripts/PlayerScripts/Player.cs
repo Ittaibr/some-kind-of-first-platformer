@@ -55,8 +55,25 @@ public partial class Player : CharacterBody2D
 		//CallDeferred(nameof(ReloadSceneSafely));	
 		SetCollisionMaskValue(2, true);
 		GD.Print("Player health depleted, reloading scene...");
+		animations.Play("Death");
+		SetCollisionLayerValue(6, false); // Disable collision layer for death animation
+		SetCollisionLayerValue(5, false); // Disable collision layer for death animation
+
+		// Wait for the death animation to finish before reloading the scene		
+		animations.AnimationFinished += OnDeathAnimationFinished;
+		
+
+	}
+
+	private void OnDeathAnimationFinished()
+	{
+		animations.AnimationFinished -= OnDeathAnimationFinished; // Unsubscribe from the signal
 		healthComponent.SetToMaxHealth();
 		Position = checkpointManager.GetLastCheckpoint();
+		MoveAndSlide();
+		SetCollisionLayerValue(5, true); 
+		SetCollisionLayerValue(6, true); 
+
 
 	}
 	private void ReloadSceneSafely()

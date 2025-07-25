@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://duaxopsqhkpbi" path="res://Scripts/Platform.cs" id="1_s8bxr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s8bxr"]
-size = Vector2(34.9069, 8.52948)
+size = Vector2(34.9069, 8.54227)
 
 [sub_resource type="Animation" id="Animation_c1gtx"]
 length = 0.001
@@ -62,7 +62,7 @@ remote_path = NodePath("../../AnimatableBody2D")
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="."]
 position = Vector2(0, 0.666667)
 rotation = -0.00684921
-collision_layer = 3
+collision_layer = 7
 
 [node name="Sprite2D" type="Sprite2D" parent="AnimatableBody2D"]
 texture = ExtResource("1_mi635")
@@ -70,7 +70,7 @@ region_enabled = true
 region_rect = Rect2(16, 0, 32, 9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D"]
-position = Vector2(-0.118707, 0.14429)
+position = Vector2(-0.0045661, 0.271225)
 scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_s8bxr")
 one_way_collision_margin = 32.1

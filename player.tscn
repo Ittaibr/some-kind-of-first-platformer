@@ -1,4 +1,4 @@
-[gd_scene load_steps=99 format=3 uid="uid://udflyx6jsf2a"]
+[gd_scene load_steps=110 format=3 uid="uid://udflyx6jsf2a"]
 
 [ext_resource type="Script" uid="uid://b5eyv3116ao5y" path="res://Scripts/PlayerScripts/Player.cs" id="1_b26j0"]
 [ext_resource type="Texture2D" uid="uid://gasahsauq5u4" path="res://art/Warrior/SpriteSheet/Warrior_Sheet-Effect.png" id="2_nvl01"]
@@ -21,13 +21,24 @@
 [ext_resource type="Texture2D" uid="uid://cuebmlv7q7kwu" path="res://art/Warrior/Individual Sprite/Dash-Attack_noDust/Warrior_Dash-Attack_9.png" id="11_hl5qd"]
 [ext_resource type="Script" uid="uid://dhndxdwueuyt0" path="res://Scripts/PlayerScripts/PlayerMoveComponent.cs" id="11_ivps1"]
 [ext_resource type="Script" uid="uid://brcfas74w27rr" path="res://Scripts/PlayerScripts/DoubleJumpState.cs" id="11_urp6f"]
+[ext_resource type="Texture2D" uid="uid://ckf4bv8hvtmfm" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_1.png" id="12_bfour"]
 [ext_resource type="Texture2D" uid="uid://c2br34x6r4oay" path="res://art/Warrior/Individual Sprite/Dash-Attack_noDust/Warrior_Dash-Attack_10.png" id="12_ek41f"]
 [ext_resource type="Script" uid="uid://ckk22agorino" path="res://Scripts/PlayerScripts/SimpleAttackState.cs" id="12_urp6f"]
 [ext_resource type="Script" uid="uid://3xp683wuutql" path="res://RollState.cs" id="13_5tmop"]
+[ext_resource type="Texture2D" uid="uid://c254bhf74bq15" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_2.png" id="13_8gr2b"]
 [ext_resource type="Script" uid="uid://13oo5bf8k1op" path="res://Scripts/PlayerScripts/SimpleAttackContinueState.cs" id="13_bwjto"]
+[ext_resource type="Texture2D" uid="uid://dfh0dofbo0lwh" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_3.png" id="14_vl8ci"]
+[ext_resource type="Texture2D" uid="uid://b4fwwh51g3tnl" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_4.png" id="15_ieltc"]
+[ext_resource type="Texture2D" uid="uid://dhybafcowiss3" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_5.png" id="16_fddr8"]
 [ext_resource type="PackedScene" uid="uid://bs7go3sq33q67" path="res://Components/health_component.tscn" id="17_op7ga"]
+[ext_resource type="Texture2D" uid="uid://cuchv02ap24my" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_6.png" id="17_oybyf"]
 [ext_resource type="Script" uid="uid://b5t15kh4emks8" path="res://HitState.cs" id="17_pylmc"]
+[ext_resource type="Texture2D" uid="uid://bmsxmp5ko3elo" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_7.png" id="18_ajfva"]
 [ext_resource type="Script" uid="uid://b7ipylxiqcy8m" path="res://WallSlideState.cs" id="18_pbfsw"]
+[ext_resource type="Texture2D" uid="uid://s6m41s8e4tq4" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_8.png" id="19_5ef02"]
+[ext_resource type="Texture2D" uid="uid://8c5ae4c8w4ih" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_9.png" id="20_pfmca"]
+[ext_resource type="Texture2D" uid="uid://i7x1yexcavih" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_10.png" id="21_76oay"]
+[ext_resource type="Texture2D" uid="uid://bxwj8lpv5itnk" path="res://art/Warrior/Individual Sprite/Death-Effect/Warrior_Death_11.png" id="22_b4uyv"]
 [ext_resource type="Script" uid="uid://df550386ys3uc" path="res://Scripts/PlayerScripts/DashAttackState.cs" id="27_khis8"]
 [ext_resource type="Script" uid="uid://bghcob34ggp1p" path="res://Scripts/PlayerScripts/CoyoteBufferState.cs" id="29_634y6"]
 [ext_resource type="Script" uid="uid://cm8n6jpsqmprv" path="res://SlideJumpState.cs" id="30_efrwb"]
@@ -393,10 +404,43 @@ animations = [{
 "name": &"DashAttack",
 "speed": 15.0
 }, {
-"frames": [],
-"loop": true,
+"frames": [{
+"duration": 1.4,
+"texture": ExtResource("12_bfour")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_8gr2b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_vl8ci")
+}, {
+"duration": 2.2,
+"texture": ExtResource("15_ieltc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_fddr8")
+}, {
+"duration": 1.3,
+"texture": ExtResource("17_oybyf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ajfva")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_5ef02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_pfmca")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_76oay")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_b4uyv")
+}],
+"loop": false,
 "name": &"Death",
-"speed": 6.7
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -573,7 +617,9 @@ disabled = true
 [node name="playerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_0hol4")
-animation = &"Run"
+animation = &"Death"
+frame = 10
+frame_progress = 1.0
 
 [node name="HurtBoxComponent" parent="." node_paths=PackedStringArray("moveInterface", "health") instance=ExtResource("9_q13i1")]
 disable_mode = 1
