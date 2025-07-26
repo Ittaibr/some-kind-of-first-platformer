@@ -6,6 +6,7 @@ public partial class WallSlideState : PlayerState
 	[Export] private float wallSlideSpeed = 100f; // Speed at which the player slides down the wall
 	[Export] private float jumpXvelocity = 200f; // Horizontal velocity when jumping off the wall
 	[Export] private double wallDownSlideMult = 2.4;
+	[Export] private float fallXvelocity = 20f; // Horizontal velocity when performing a down attack from the wall
 	protected int totalNumOfWallCheckTicks = 4;
 	protected int numOfWallCheckTicks = 0;
 
@@ -128,11 +129,20 @@ public partial class WallSlideState : PlayerState
 			TransitionTo("Jump");
 			return;
 		}
-		/*else if (IsWantDown())
+		else if (IsWantDownAttack())
 		{
+			if (animations.FlipH)
+			{
+				velocity.X = fallXvelocity;
+			}
+			else
+			{
+				velocity.X = -fallXvelocity;
+			}
 			TransitionTo("Fall");
-		}*/
-		else if (IsWantDash() && parent.dashsLeft >0)
+			return;
+		}
+		else if (IsWantDash() && parent.dashsLeft > 0)
 		{
 			parent.animations.FlipH = !animations.FlipH; // Maintain the current facing direction during dash
 			TransitionTo("Dash");

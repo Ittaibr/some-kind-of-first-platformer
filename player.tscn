@@ -599,7 +599,7 @@ jumpCutOff = 1.5
 airDecc = 900.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.42, 1.42)
+zoom = Vector2(1.37, 1.37)
 limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 6.0
